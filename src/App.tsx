@@ -120,10 +120,12 @@ const Navbar = ({ onOpenAppointment, onOpenEmergency }: { onOpenAppointment?: ()
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-xl py-3 border-b border-brand-teal/5' : 'bg-transparent py-6 lg:top-10'}`}>
       {/* Scroll Progress Bar */}
-      <motion.div 
-        className="absolute top-0 left-0 right-0 h-[3px] bg-brand-teal z-[60] origin-left"
-        style={{ scaleX: scrollProgress }}
-      />
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-brand-teal/10 z-[60]">
+        <motion.div 
+          className="h-full bg-brand-teal origin-left"
+          style={{ scaleX: scrollProgress }}
+        />
+      </div>
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
         {/* Logo */}
         <div 
@@ -181,9 +183,20 @@ const Navbar = ({ onOpenAppointment, onOpenEmergency }: { onOpenAppointment?: ()
           ))}
           <button 
             onClick={onOpenAppointment}
-            className={`px-6 py-2.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all ${isScrolled ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20' : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white hover:text-brand-teal'}`}
+            className={`px-6 py-2.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all duration-300 relative group overflow-hidden ${
+              isScrolled 
+                ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20 hover:bg-brand-teal-dark' 
+                : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white hover:text-brand-teal'
+            }`}
           >
-            RDV
+            <span className="relative z-10">RDV</span>
+            {!isScrolled && (
+              <motion.div 
+                animate={{ x: ['-100%', '100%'] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+              />
+            )}
           </button>
         </div>
 
@@ -294,10 +307,10 @@ const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.div 
               key={currentIdx}
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={{ opacity: 1, scale: 1.05 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
+              initial={{ opacity: 0, scale: 1.15, filter: 'blur(10px)' }}
+              animate={{ opacity: 1, scale: 1.05, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, scale: 1.2, filter: 'blur(10px)' }}
+              transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1] }}
               className="w-full h-full relative"
             >
               <img 
@@ -615,16 +628,19 @@ const ServicesGrid = () => {
                 </span>
               </div>
               
-              <div className="flex-1 flex flex-col">
-                <h3 className="text-2xl mb-4 text-brand-navy font-bold group-hover:text-brand-teal transition-colors leading-tight">
+                <div className="flex-1 flex flex-col pt-2">
+                <h3 className="text-2xl mb-4 text-brand-navy font-black group-hover:text-brand-teal transition-colors leading-tight tracking-tight">
                   {service.title}
                 </h3>
-                <p className="text-brand-slate mb-8 leading-relaxed text-sm font-medium opacity-80 flex-1">
+                <p className="text-brand-slate mb-8 leading-relaxed text-sm font-medium opacity-80 flex-1 group-hover:opacity-100 transition-opacity">
                   {service.desc}
                 </p>
-                <div className="mt-auto">
-                  <a href="#" className="inline-flex items-center text-brand-navy font-bold hover:text-brand-teal transition-colors group/link uppercase tracking-widest text-[11px] border-b-2 border-brand-teal/10 pb-1">
-                    En Savoir Plus 
+                <div className="mt-auto overflow-hidden">
+                  <a href="#" className="inline-flex items-center text-brand-navy font-bold hover:text-brand-teal transition-all group/link uppercase tracking-widest text-[11px] pb-1">
+                   <span className="relative">
+                      En Savoir Plus 
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-teal transition-all group-hover/link:w-full" />
+                   </span>
                     <ArrowRight size={14} className="ml-2 group-hover/link:translate-x-2 transition-transform opacity-60" />
                   </a>
                 </div>
@@ -902,19 +918,20 @@ const BeforeAfterGallery = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-16">
-          {cases.map((item) => (
+          {cases.map((item, index) => (
             <motion.div 
               key={item.id}
               className="group"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1, duration: 0.8 }}
               viewport={{ once: true }}
               onMouseEnter={() => setHoveredId(item.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <div className="relative aspect-[4/5] rounded-[48px] overflow-hidden bg-brand-stone shadow-2xl border-8 border-white mb-10 group-hover:shadow-brand-teal/10 transition-shadow">
+              <div className="relative aspect-[4/5] rounded-[48px] overflow-hidden bg-brand-stone shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] group-hover:shadow-brand-teal/20 border-8 border-white mb-10 transition-all duration-500">
                 {/* Before Image (Base) */}
-                <img src={item.before} alt="Avant" className="absolute inset-0 w-full h-full object-cover" />
+                <img src={item.before} alt="Avant" className="absolute inset-0 w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700" />
                 
                 {/* After Image (Slide reveal) */}
                 <motion.div 
@@ -923,23 +940,31 @@ const BeforeAfterGallery = () => {
                   animate={{ 
                     clipPath: hoveredId === item.id ? 'inset(0 0 0 0)' : 'inset(0 0 0 100%)' 
                   }}
-                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <img src={item.after} alt="Après" className="w-full h-full object-cover" />
-                  <div className="absolute top-8 right-8 bg-brand-teal text-white text-[10px] font-black px-5 py-2.5 rounded-full shadow-xl z-20 uppercase tracking-widest border border-white/20">
+                  <div className="absolute top-8 right-8 bg-brand-teal text-white text-[10px] font-black px-6 py-3 rounded-full shadow-2xl z-20 uppercase tracking-[0.2em] border border-white/30 backdrop-blur-md">
                     Après
                   </div>
                 </motion.div>
 
-                {/* Labels and Hints */}
-                <div className="absolute top-8 left-8 bg-brand-navy/60 backdrop-blur-md text-white text-[10px] font-black px-5 py-2.5 rounded-full shadow-xl z-0 uppercase tracking-widest border border-white/10">
-                  Avant
-                </div>
+                {/* Handle (Visual cue) */}
+                <motion.div 
+                  className="absolute inset-y-0 w-1 bg-white z-20"
+                  animate={{ 
+                    left: hoveredId === item.id ? '0%' : '100%' 
+                  }}
+                  initial={{ left: '100%' }}
+                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                >
+                   <div className="absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-xl flex items-center justify-center text-brand-teal">
+                      <ChevronLeft size={16} /><ChevronRight size={16} className="-ml-2" />
+                   </div>
+                </motion.div>
 
-                <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none group-hover:opacity-0 transition-opacity duration-500">
-                  <div className="bg-white/10 backdrop-blur-xl p-6 rounded-full border border-white/30 animate-pulse">
-                    <MousePointer2 className="text-white" size={32} />
-                  </div>
+                {/* Labels and Hints */}
+                <div className="absolute top-8 left-8 bg-brand-navy/40 backdrop-blur-md text-white text-[10px] font-black px-6 py-3 rounded-full shadow-xl z-0 uppercase tracking-[0.2em] border border-white/10">
+                  Avant
                 </div>
               </div>
 
@@ -1088,19 +1113,23 @@ const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose:
             className="absolute inset-0 bg-brand-navy/60 backdrop-blur-md"
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.9, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            className="bg-white w-full max-w-xl rounded-[40px] shadow-2xl relative z-10 overflow-hidden border border-brand-stone"
+            exit={{ opacity: 0, scale: 0.92, y: 20 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="bg-white w-full max-w-xl rounded-[48px] shadow-2xl relative z-10 overflow-hidden border border-brand-stone"
           >
-            <div className="p-8 md:p-12">
-              <div className="flex justify-between items-center mb-8">
-                <h3 className="text-3xl font-extrabold text-brand-navy tracking-tight">{title}</h3>
+            <div className="p-8 md:p-14">
+              <div className="flex justify-between items-center mb-10">
+                <div className="space-y-1">
+                  <h3 className="text-3xl font-black text-brand-navy tracking-tight leading-none">{title}</h3>
+                  <div className="h-1 w-10 bg-brand-teal rounded-full opacity-30" />
+                </div>
                 <button 
                   onClick={onClose}
-                  className="w-12 h-12 bg-brand-stone rounded-2xl flex items-center justify-center text-brand-navy hover:bg-brand-teal hover:text-white transition-all shadow-sm"
+                  className="w-14 h-14 bg-brand-stone/50 hover:bg-red-50 hover:text-red-500 rounded-2xl flex items-center justify-center text-brand-navy transition-all duration-300 shadow-sm group"
                 >
-                  <X size={24} />
+                  <X size={24} className="group-hover:rotate-90 transition-transform" />
                 </button>
               </div>
               {children}
@@ -1261,9 +1290,19 @@ export default function App() {
         </motion.button>
 
         {/* WhatsApp Button */}
-        <button className="w-16 h-16 bg-[#25D366] text-white rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all">
-          <MessageCircle size={36} />
-        </button>
+        <a 
+          href="https://wa.me/212522252472?text=Bonjour%2C%20je%20souhaite%20prendre%20rendez-vous%20pour%20mon%20animal."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative w-16 h-16 bg-[#25D366] text-white rounded-[24px] flex items-center justify-center transition-all transform-gpu hover:scale-110 active:scale-95 shadow-[0_12px_0_0_#15803d,0_20px_40px_rgba(37,211,102,0.4)] hover:shadow-[0_14px_0_0_#15803d,0_25px_50px_rgba(37,211,102,0.5)] active:shadow-[0_2px_0_0_#15803d,0_5px_10px_rgba(37,211,102,0.3)]"
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/5 to-transparent rounded-[24px]" />
+          <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#25D366] text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 transition-all transform group-hover:-translate-y-1 shadow-xl whitespace-nowrap pointer-events-none">
+            Chat WhatsApp
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#25D366] rotate-45" />
+          </div>
+          <MessageCircle size={36} className="relative z-10 drop-shadow-[0_4px_4px_rgba(0,0,0,0.2)]" />
+        </a>
 
       </div>
 
