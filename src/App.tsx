@@ -224,16 +224,16 @@ const Hero = () => {
         <div className="absolute inset-0 opacity-[0.15] pointer-events-none z-[1]" 
           style={{ 
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 10c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-8 4c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm16 0c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-8 22c5.5 0 10-4.5 10-10 0-3.3-2.7-6-6-6h-8c-3.3 0-6 2.7-6 6 0 5.5 4.5 10 10 10z' fill='%23ffffff'/%3E%3C/svg%3E")`,
-            backgroundSize: '80px 80px'
+            backgroundSize: '100px 100px'
           }}
         />
 
-        <div className="absolute right-0 top-0 w-full lg:w-3/5 h-full z-10 overflow-hidden">
+        <div className="absolute right-0 top-0 w-full lg:w-[55%] h-full z-10 overflow-hidden">
           <div className="w-full h-full relative">
             <img 
               src={heroImage} 
               alt="Cabinet Vétérinaire Val Fleuri" 
-              className="w-full h-full object-cover object-center lg:object-right-bottom scale-105"
+              className="w-full h-full object-cover object-center scale-110"
               referrerPolicy="no-referrer"
             />
             {/* Gradients for text contrast */}
@@ -342,10 +342,9 @@ const AboutSection = () => (
         </div>
         <div className="relative z-10 overflow-hidden aspect-square max-w-[320px] sm:max-w-[450px] lg:max-w-[500px] mx-auto lg:mx-0 shadow-2xl rounded-[40%_60%_70%_30%/40%_50%_60%_50%] border-8 border-brand-stone/50 group">
           <img 
-            src="https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&q=80&w=1200" 
+            src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80&w=1200" 
             alt="Expert Vet Care Excellence" 
-            className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
-            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-110"
           />
         </div>
         <div className="absolute -bottom-6 -right-6 text-brand-teal opacity-20">
@@ -603,15 +602,13 @@ const Testimonials = () => {
   const [active, setActive] = useState(0);
   const reviews = [
     {
-      name: "Sabrina",
-      role: "Maman de Rex",
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200",
+      name: "Saara",
+      role: "Propriétaire d'animaux",
       quote: "Le meilleure cabinet vétérinaire à Casablanca ! Dr Kenza est juste merveilleuse avec nos petits compagnons. Elle prend tout son temps et son suivi est très personnalisé."
     },
     {
-      name: "Yassine",
-      role: "Passionné de Félins",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200",
+      name: "Ahmed",
+      role: "Ami des chats",
       quote: "Une équipe professionnelle et à l'écoute. Les soins sont d'une grande qualité et on sent vraiment l'amour des animaux chez tout le personnel."
     }
   ];
@@ -635,7 +632,7 @@ const Testimonials = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16 text-white">
-          <p className="font-bold tracking-widest uppercase mb-2 opacity-80 text-[10px]">Expériences Réelles</p>
+          <p className="font-bold tracking-widest uppercase mb-2 opacity-80 text-[10px]">Ce Que Disent Nos Clients</p>
           <h2 className="text-6xl md:text-7xl font-black tracking-tight">Avis <span className="font-serif italic text-white/50 tracking-normal">Incroiyables</span></h2>
         </div>
 
@@ -643,20 +640,20 @@ const Testimonials = () => {
           {/* Image Mockup */}
           <div className="relative max-w-xs md:max-w-sm w-full">
             <div className="absolute inset-0 bg-brand-teal-dark rounded-3xl translate-x-4 translate-y-4 -z-10" />
-            <div className="aspect-[4/5] rounded-3xl overflow-hidden border-4 border-white shadow-2xl group cursor-pointer">
+            <div className="aspect-[4/5] rounded-3xl overflow-hidden border-4 border-white shadow-2xl">
               <img 
-                src="https://images.unsplash.com/photo-1596492784531-6e6eb5ea9993?auto=format&fit=crop&q=80&w=800" 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                alt="Vet Clinic Patient Care" 
-                referrerPolicy="no-referrer"
+                src="https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&q=80&w=800" 
+                className="w-full h-full object-cover" 
+                alt="Golden Retriever at vet" 
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
             </div>
           </div>
 
           <div className="max-w-2xl w-full bg-white p-12 md:p-20 rounded-[48px] shadow-2xl relative border border-brand-stone">
-            <div className="absolute top-10 left-10 text-brand-teal-light opacity-20">
-              <MessageCircle size={80} strokeWidth={1} />
+            <div className="absolute top-10 left-10 text-brand-teal-light">
+              <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor" opacity="0.1">
+                <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C20.1216 16 21.017 16.8954 21.017 18V21C21.017 22.1046 20.1216 23 19.017 23H16.017C14.9124 23 14.017 22.1046 14.017 21ZM14.017 18V21C14.017 22.1046 14.9124 23 16.017 23H19.017C20.1216 23 21.017 22.1046 21.017 21V18C21.017 16.8954 20.1216 16 19.017 16H16.017C14.9124 16 14.017 16.8954 14.017 18ZM2 21L2 18C2 16.8954 2.89543 16 4 16H7C8.10457 16 9 16.8954 9 18V21C9 22.1046 8.10457 23 7 23H4C2.89543 23 2 22.1046 2 21ZM2 18V21C2 22.1046 2.89543 23 4 23H7C8.10457 23 9 22.1046 9 21V18C9 16.8954 8.10457 16 7 16H4C2.89543 16 2 16.8954 2 18Z" />
+              </svg>
             </div>
 
             <AnimatePresence mode="wait">
@@ -667,29 +664,15 @@ const Testimonials = () => {
                 exit={{ opacity: 0, scale: 0.95 }}
                 className="text-center"
               >
-                <div className="mb-8 flex justify-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <div key={i} className="text-brand-teal">
-                      <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                      </svg>
-                    </div>
-                  ))}
-                </div>
                 <p className="text-2xl md:text-3xl text-brand-teal-dark font-serif italic mb-12 leading-relaxed">
                   "{reviews[active].quote}"
                 </p>
                 <div className="flex flex-col items-center">
-                  <div className="w-24 h-24 bg-brand-stone rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-white shadow-xl">
-                    <img 
-                      src={reviews[active].image} 
-                      alt={reviews[active].name} 
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
+                  <div className="w-20 h-20 bg-brand-teal-light rounded-full flex items-center justify-center mb-4 overflow-hidden border-4 border-white shadow-lg">
+                    <PawPrint size={40} className="text-brand-teal" />
                   </div>
                   <h4 className="text-2xl font-bold text-brand-teal-dark">{reviews[active].name}</h4>
-                  <p className="text-brand-teal font-black uppercase tracking-[0.2em] text-[10px]">{reviews[active].role}</p>
+                  <p className="text-brand-teal font-semibold uppercase tracking-widest text-xs">{reviews[active].role}</p>
                 </div>
               </motion.div>
             </AnimatePresence>
