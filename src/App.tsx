@@ -62,7 +62,7 @@ const TopBar = () => (
   </div>
 );
 
-const Navbar = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
+const Navbar = ({ onOpenAppointment, onOpenEmergency }: { onOpenAppointment?: () => void, onOpenEmergency?: () => void }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -95,6 +95,7 @@ const Navbar = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
     { name: 'Accueil', href: '#home', id: 'home' },
     { name: 'À Propos', href: '#about', id: 'about' },
     { name: 'Services', href: '#services', id: 'services' },
+    { name: 'Urgence', isEmergency: true },
     { name: 'Contact', href: '#contact', id: 'contact' },
   ];
 
@@ -148,14 +149,32 @@ const Navbar = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
             <a 
               key={link.name} 
               href={link.href} 
-              onClick={(e) => handleNavClick(e, link.href)}
-              className={`relative font-bold text-[12px] uppercase tracking-wider hover:text-brand-teal transition-all flex items-center gap-1.5 ${isScrolled ? 'text-brand-navy' : 'text-white'} ${activeSection === link.id ? 'text-brand-teal' : ''}`}
+              onClick={(e) => {
+                if (link.isEmergency) {
+                  e.preventDefault();
+                  onOpenEmergency?.();
+                } else if (link.href) {
+                  handleNavClick(e, link.href);
+                }
+              }}
+              className={`relative font-bold text-[12px] uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+                link.isEmergency 
+                  ? 'text-red-500 hover:text-red-600' 
+                  : (isScrolled ? 'text-brand-navy hover:text-brand-teal' : 'text-white hover:text-brand-teal/80')
+              } ${activeSection === link.id ? 'text-brand-teal' : ''}`}
             >
               {link.name}
-              {activeSection === link.id && (
+              {activeSection === link.id && !link.isEmergency && (
                 <motion.div 
                   layoutId="activeNav"
                   className="absolute -bottom-2 left-0 right-0 h-0.5 bg-brand-teal rounded-full"
+                />
+              )}
+              {link.isEmergency && (
+                <motion.div 
+                  animate={{ opacity: [1, 0.4, 1] }} 
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-1.5 h-1.5 bg-red-500 rounded-full" 
                 />
               )}
             </a>
@@ -191,11 +210,27 @@ const Navbar = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
                 <a 
                   key={link.name} 
                   href={link.href} 
-                  className="flex justify-between items-center text-lg font-bold text-brand-navy p-4 bg-brand-stone/40 rounded-2xl hover:bg-brand-teal-light hover:text-brand-teal transition-all group"
-                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={`flex justify-between items-center text-lg font-bold p-4 rounded-2xl transition-all group ${
+                    link.isEmergency 
+                      ? 'bg-red-50 text-red-600 hover:bg-red-100' 
+                      : 'bg-brand-stone/40 text-brand-navy hover:bg-brand-teal-light hover:text-brand-teal'
+                  }`}
+                  onClick={(e) => {
+                    if (link.isEmergency) {
+                      e.preventDefault();
+                      onOpenEmergency?.();
+                      setIsMobileMenuOpen(false);
+                    } else if (link.href) {
+                      handleNavClick(e, link.href);
+                    }
+                  }}
                 >
                   {link.name}
-                  <ArrowRight size={20} className="text-brand-teal/40 group-hover:translate-x-1 transition-transform" />
+                  {link.isEmergency ? (
+                    <Activity size={20} className="text-red-400 group-hover:scale-110 transition-transform" />
+                  ) : (
+                    <ArrowRight size={20} className="text-brand-teal/40 group-hover:translate-x-1 transition-transform" />
+                  )}
                 </a>
               ))}
               
@@ -1108,7 +1143,7 @@ export default function App() {
   return (
     <div className="relative font-sans antialiased text-brand-navy selection:bg-brand-teal selection:text-white bg-white">
       <TopBar />
-      <Navbar onOpenAppointment={openAppointmentModal} />
+      <Navbar onOpenAppointment={openAppointmentModal} onOpenEmergency={openEmergencyModal} />
       
       <main>
         <Hero onOpenAppointment={openAppointmentModal} />
@@ -1152,8 +1187,9 @@ export default function App() {
       >
         <div className="space-y-8">
           <div className="bg-red-50 border-2 border-red-100 p-6 rounded-3xl flex items-start gap-5">
-            <div className="w-12 h-12 bg-red-500 rounded-2xl flex items-center justify-center shrink-0 shadow-lg text-white">
-              <Phone size={24} />
+            <div className="w-12 h-12 bg-red-500 rounded-2xl flex items-center justify-center shrink-0 shadow-[0_4px_0_0_#991b1b] text-white relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent" />
+              <Phone size={24} className="relative z-10" />
             </div>
             <div>
               <h4 className="font-bold text-red-900 mb-1">Ligne Directe Urgence</h4>
@@ -1204,12 +1240,25 @@ export default function App() {
         </AnimatePresence>
 
         {/* Emergency Button */}
-        <button 
+        <motion.button 
           onClick={openEmergencyModal}
-          className="w-14 h-14 bg-red-500 text-white rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 hover:bg-red-600 active:scale-95 transition-all animate-pulse"
+          animate={{ 
+            y: [0, -10, 0],
+          }}
+          transition={{
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="group relative w-16 h-16 bg-red-500 text-white rounded-[24px] flex items-center justify-center transition-all transform-gpu hover:scale-110 active:scale-95 active:translate-y-1 shadow-[0_12px_0_0_#991b1b,0_20px_40px_rgba(239,68,68,0.4)] hover:shadow-[0_14px_0_0_#991b1b,0_25px_50px_rgba(239,68,68,0.5)] active:shadow-[0_2px_0_0_#991b1b,0_5px_10px_rgba(239,68,68,0.3)]"
         >
-          <Activity size={28} />
-        </button>
+          <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/5 to-transparent rounded-[24px]" />
+          <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-red-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 transition-all transform group-hover:-translate-y-1 shadow-xl whitespace-nowrap pointer-events-none">
+            Urgence 24h/7
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-red-600 rotate-45" />
+          </div>
+          <Activity size={32} className="relative z-10 drop-shadow-[0_4px_4px_rgba(0,0,0,0.3)]" />
+        </motion.button>
 
         {/* WhatsApp Button */}
         <button className="w-16 h-16 bg-[#25D366] text-white rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all">
