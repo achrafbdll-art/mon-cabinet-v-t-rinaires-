@@ -224,7 +224,7 @@ const Hero = () => {
         <div className="absolute inset-0 opacity-[0.15] pointer-events-none z-[1]" 
           style={{ 
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 10c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-8 4c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm16 0c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-8 22c5.5 0 10-4.5 10-10 0-3.3-2.7-6-6-6h-8c-3.3 0-6 2.7-6 6 0 5.5 4.5 10 10 10z' fill='%23ffffff'/%3E%3C/svg%3E")`,
-            backgroundSize: '100px 100px'
+            backgroundSize: '80px 80px'
           }}
         />
 
