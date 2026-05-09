@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", sans-serif;
+  --font-serif: "Libre Baskerville", serif;
+
+  /* Screenshot Teal Palette */
+  --color-brand-teal: #009999;
+  --color-brand-teal-dark: #007a7a;
+  --color-brand-teal-light: #e6f5f5;
+  --color-brand-cream: #f9f8f4;
+  --color-brand-navy: #1f2b3e;
+  --color-brand-stone: #f4f7f6;
+  --color-brand-slate: #4b5563;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-brand-navy bg-brand-cream/30 overflow-x-hidden;
+  }
+  h1, h2, h3, h4 {
+    @apply font-display font-extrabold tracking-tight;
+  }
+  .serif-heading {
+    @apply font-serif font-bold italic;
+  }
+}
+
+.blob-mask {
+  mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23FF0066' d='M44.7,-76.4C58.3,-69.2,70.1,-59.1,79.5,-46.5C89,-33.9,96.1,-18.9,94.9,-4.2C93.7,10.6,84.1,25,74.1,38.2C64.1,51.4,53.6,63.4,41,71.2C28.4,79,14.2,82.7,-0.7,83.9C-15.6,85.1,-31.1,83.8,-44.7,77.1C-58.3,70.4,-70.1,58.3,-78.3,44.4C-86.4,30.5,-91,14.8,-90.4,0.3C-89.9,-14.2,-84.3,-27.4,-75.4,-39.3C-66.5,-51.2,-54.3,-61.8,-40.8,-69.1C-27.3,-76.4,-13.7,-80.4,0.4,-81.1C14.5,-81.8,29,-79.1,44.7,-76.4Z' transform='translate(100 100)' /%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+}
