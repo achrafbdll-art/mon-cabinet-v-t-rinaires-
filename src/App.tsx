@@ -1216,12 +1216,6 @@ export default function App() {
           <MessageCircle size={36} />
         </button>
 
-        {/* Accessibility Button */}
-        <button className="w-14 h-14 bg-white text-brand-teal rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 transition-all border border-brand-teal/20">
-          <div className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center p-1 overflow-hidden">
-            <div className="w-full h-full bg-current rounded-sm rotate-45" title="Accessibility icon" />
-          </div>
-        </button>
       </div>
 
       <BottomCTA onOpenAppointment={openAppointmentModal} />
