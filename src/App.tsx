@@ -24,7 +24,9 @@ import {
   ChevronRight,
   ArrowUp,
   MousePointer2,
-  Sparkles
+  Sparkles,
+  Heart,
+  Check
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -428,73 +430,180 @@ const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
   );
 };
 
-const AboutSection = () => (
-  <section className="py-16 lg:py-24 bg-white" id="about">
-    <div className="container mx-auto px-4 md:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        className="relative order-2 lg:order-1"
-      >
-        <div className="absolute -top-6 -left-6 text-brand-teal opacity-20">
-          <div className="grid grid-cols-4 gap-2">
-            {[...Array(16)].map((_, i) => <div key={i} className="w-2 h-2 rounded-full bg-current" />)}
-          </div>
-        </div>
-        <div className="relative z-10 overflow-hidden aspect-square max-w-[320px] sm:max-w-[450px] lg:max-w-[500px] mx-auto lg:mx-0 shadow-2xl rounded-[40%_60%_70%_30%/40%_50%_60%_50%] border-8 border-brand-stone/50 group">
-          <img 
-            src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&q=80&w=1200" 
-            alt="Expert Vet Care Excellence" 
-            className="w-full h-full object-cover object-[center_20%] transition-transform duration-700 group-hover:scale-110"
-          />
-        </div>
-        <div className="absolute -bottom-6 -right-6 text-brand-teal opacity-20">
-          <div className="grid grid-cols-4 gap-2">
-            {[...Array(16)].map((_, i) => <div key={i} className="w-2 h-2 rounded-full bg-current" />)}
-          </div>
-        </div>
-      </motion.div>
+const AboutSection = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.1
+      }
+    }
+  };
 
-      <motion.div 
-        className="order-1 lg:order-2"
-        initial={{ opacity: 0, x: 30 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <span className="text-brand-teal font-bold uppercase tracking-widest text-[10px] mb-4 block">Découvrez notre univers</span>
-        <h2 className="text-3xl md:text-5xl mb-6 lg:mb-8 text-brand-navy leading-tight font-extrabold tracking-tight">
-          Bienvenue au <span className="font-serif italic text-brand-teal">Cabinet Vétérinaire</span> Val Fleuri
-        </h2>
-        <p className="text-brand-slate text-base lg:text-lg mb-6 lg:mb-8 leading-relaxed opacity-90">
-          l'adresse préférée des amoureux des animaux au Maroc ! Située au cœur de Casablanca, 
-          notre clinique vétérinaire allie expertise médicale, technologie de pointe et compassion pour 
-          offrir à vos compagnons à quatre pattes des soins sur mesure.
-        </p>
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+    }
+  };
 
-        <ul className="space-y-5 mb-10">
-          {[
-            "Soins vétérinaires complets et spécialisés.",
-            "Expertise en animaux exotiques (NAC) et bien-être animal.",
-            "Services pratiques et transparents."
-          ].map((item, i) => (
-            <li key={i} className="flex items-center space-x-4 group">
-              <div className="text-brand-teal bg-brand-teal-light p-2 rounded-xl group-hover:scale-110 transition-transform">
-                <CheckCircle2 size={20} className="text-brand-teal" />
+  return (
+    <section className="py-24 lg:py-32 bg-white relative overflow-hidden" id="about">
+      {/* Background Decorative Elements */}
+      <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-stone/10 -skew-x-12 translate-x-1/2 pointer-events-none" />
+      
+      <div className="container mx-auto px-4 md:px-8 relative">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          {/* Left Side: Creative Image Composition */}
+          <div className="relative order-2 lg:order-1">
+            <motion.div 
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="relative"
+            >
+              {/* Floating Dots Background */}
+              <div className="absolute -top-10 -left-10 text-brand-teal opacity-20 hidden md:block">
+                <div className="grid grid-cols-6 gap-3">
+                  {[...Array(36)].map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-current" />)}
+                </div>
               </div>
-              <span className="font-semibold text-brand-navy text-lg">{item}</span>
-            </li>
-          ))}
-        </ul>
 
-        <button className="bg-brand-teal-dark hover:bg-brand-teal text-white font-bold py-4 px-12 rounded-xl transition-all shadow-xl shadow-brand-teal-dark/10">
-          DÉCOUVREZ PLUS
-        </button>
-      </motion.div>
-    </div>
-  </section>
-);
+              {/* Main Animated Blob Container */}
+              <motion.div 
+                animate={{ 
+                  y: [0, -20, 0],
+                  rotate: [0, 1, 0]
+                }}
+                transition={{ 
+                  duration: 6, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }}
+                className="relative z-10 mx-auto lg:mx-0 w-full max-w-[540px]"
+              >
+                <motion.div 
+                  className="relative aspect-square overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border-[12px] border-white/50 backdrop-blur-sm group"
+                  animate={{
+                    borderRadius: [
+                      "40% 60% 70% 30% / 40% 50% 60% 50%",
+                      "60% 40% 30% 70% / 50% 30% 70% 50%",
+                      "40% 60% 70% 30% / 40% 50% 60% 50%"
+                    ]
+                  }}
+                  transition={{ 
+                    duration: 10, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                >
+                  <img 
+                    src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=1200" 
+                    alt="Cabinet Vétérinaire Val Fleuri" 
+                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1"
+                  />
+                  
+                  {/* Subtle Overlay */}
+                  <div className="absolute inset-0 bg-brand-navy/5 group-hover:bg-transparent transition-colors duration-500" />
+                </motion.div>
+
+                {/* Floating Tag */}
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 1 }}
+                  className="absolute -bottom-6 -left-6 md:left-10 bg-white p-6 rounded-3xl shadow-2xl z-20 hidden sm:flex items-center gap-4 border border-brand-stone"
+                >
+                  <div className="w-12 h-12 bg-brand-teal/10 rounded-2xl flex items-center justify-center text-brand-teal">
+                    <Heart className="animate-pulse" size={24} />
+                  </div>
+                  <div>
+                    <p className="font-black text-brand-navy leading-none">15+ Ans</p>
+                    <p className="text-[10px] text-brand-slate uppercase font-bold tracking-widest mt-1">D'Expertise</p>
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Decorative Circle */}
+              <div className="absolute -bottom-12 -right-12 w-48 h-48 border-2 border-brand-teal/10 rounded-full hidden lg:block" />
+            </motion.div>
+          </div>
+
+          {/* Right Side: Content */}
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="order-1 lg:order-2"
+          >
+            <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 bg-brand-teal/5 rounded-full mb-8">
+              <span className="w-2 h-2 bg-brand-teal rounded-full animate-ping" />
+              <span className="text-brand-teal font-black uppercase tracking-[0.2em] text-[10px]">
+                Découvrez notre univers
+              </span>
+            </motion.div>
+
+            <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl mb-8 text-brand-navy font-black tracking-tighter leading-[0.95]">
+              Bienvenue au <br />
+              <span className="font-serif italic text-brand-teal font-normal underline decoration-brand-teal/20 underline-offset-8">Cabinet Vétérinaire</span> <br />
+              Val Fleuri
+            </motion.h2>
+
+            <motion.p variants={itemVariants} className="text-brand-slate text-lg lg:text-xl mb-10 leading-relaxed font-medium opacity-80 max-w-xl">
+              L'adresse de référence pour le bien-être animal à Casablanca. 
+              Une alliance unique entre <span className="text-brand-navy font-bold">expertise de pointe</span> et une approche profondément humaine.
+            </motion.p>
+
+            <motion.div variants={itemVariants} className="space-y-6 mb-12">
+              {[
+                { title: "Excellence Médicale", desc: "Soins spécialisés et chirurgie de pointe." },
+                { title: "Animaux Exotiques", desc: "Expertise certifiée pour les Nouveaux Animaux de Compagnie (NAC)." },
+                { title: "Transparence Totale", desc: "Une communication claire pour des choix sereins." }
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-5 group">
+                  <div className="mt-1 w-6 h-6 rounded-full border-2 border-brand-teal/30 flex items-center justify-center group-hover:bg-brand-teal group-hover:border-brand-teal transition-all flex-shrink-0">
+                    <Check size={12} className="text-brand-teal group-hover:text-white" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-brand-navy group-hover:text-brand-teal transition-colors">{item.title}</h4>
+                    <p className="text-sm text-brand-slate font-medium">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-6">
+              <button className="bg-brand-navy text-white font-black py-5 px-10 rounded-2xl transition-all shadow-2xl hover:bg-brand-teal transform hover:-translate-y-1 active:scale-95 uppercase tracking-widest text-xs">
+                En savoir plus
+              </button>
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-3">
+                  {[1,2,3].map(i => (
+                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white overflow-hidden">
+                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Client" />
+                    </div>
+                  ))}
+                </div>
+                <div className="text-[11px] font-bold text-brand-slate">
+                  <span className="text-brand-navy font-black block">+2500 Clients</span> 
+                  Satisfaits à Casablanca
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 
 const FeaturesSection = () => {
   const features = [
