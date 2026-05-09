@@ -62,7 +62,7 @@ const TopBar = () => (
   </div>
 );
 
-const Navbar = () => {
+const Navbar = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -160,6 +160,12 @@ const Navbar = () => {
               )}
             </a>
           ))}
+          <button 
+            onClick={onOpenAppointment}
+            className={`px-6 py-2.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all ${isScrolled ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20' : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white hover:text-brand-teal'}`}
+          >
+            RDV
+          </button>
         </div>
 
         {/* Mobile Toggle */}
@@ -193,15 +199,24 @@ const Navbar = () => {
                 </a>
               ))}
               
-              <div className="pt-6 flex items-center justify-between border-t border-brand-stone/50 mt-4 px-2">
-                <div className="flex space-x-4">
-                  <a href="#" className="w-12 h-12 bg-brand-stone rounded-2xl flex items-center justify-center text-brand-navy hover:bg-brand-teal hover:text-white transition-all"><Facebook size={20} /></a>
-                  <a href="#" className="w-12 h-12 bg-brand-stone rounded-2xl flex items-center justify-center text-brand-navy hover:bg-brand-teal hover:text-white transition-all"><Instagram size={20} /></a>
+              <div className="pt-6 flex flex-col gap-4 border-t border-brand-stone/50 mt-4">
+                <div className="flex items-center justify-between px-2">
+                  <div className="flex space-x-4">
+                    <a href="#" className="w-12 h-12 bg-brand-stone rounded-2xl flex items-center justify-center text-brand-navy hover:bg-brand-teal hover:text-white transition-all"><Facebook size={20} /></a>
+                    <a href="#" className="w-12 h-12 bg-brand-stone rounded-2xl flex items-center justify-center text-brand-navy hover:bg-brand-teal hover:text-white transition-all"><Instagram size={20} /></a>
+                  </div>
+                  <a href="tel:+212522252472" className="flex items-center gap-3 bg-brand-navy text-white px-6 py-3.5 rounded-2xl font-bold text-sm shadow-lg shadow-brand-navy/20">
+                    <Phone size={18} />
+                    <span>APPEL</span>
+                  </a>
                 </div>
-                <a href="tel:+212522252472" className="flex items-center gap-3 bg-brand-teal text-white px-6 py-3.5 rounded-2xl font-bold text-sm shadow-lg shadow-brand-teal/20">
-                  <Phone size={18} />
-                  <span>APPEL</span>
-                </a>
+                <button 
+                  onClick={onOpenAppointment}
+                  className="w-full flex items-center justify-center gap-3 bg-brand-teal text-white py-4 rounded-2xl font-bold text-sm shadow-lg shadow-brand-teal/20 uppercase tracking-widest"
+                >
+                  <Sparkles size={18} />
+                  <span>Prendre RDV</span>
+                </button>
               </div>
             </div>
           </motion.div>
@@ -211,8 +226,20 @@ const Navbar = () => {
   );
 };
 
-const Hero = () => {
-  const heroImage = "https://images.unsplash.com/photo-1606425271394-c3ca9aa1fc06?auto=format&fit=crop&q=80&w=2000";
+const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
+  const images = [
+    "https://images.unsplash.com/photo-1606425271394-c3ca9aa1fc06?auto=format&fit=crop&q=80&w=2000",
+    "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=2000"
+  ];
+  
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIdx((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <section className="relative min-h-[600px] lg:min-h-screen bg-brand-teal overflow-hidden flex items-center" id="home">
@@ -229,16 +256,47 @@ const Hero = () => {
         />
 
         <div className="absolute right-0 top-0 w-full lg:w-[55%] h-full z-10 overflow-hidden">
-          <div className="w-full h-full relative">
-            <img 
-              src={heroImage} 
-              alt="Cabinet Vétérinaire Val Fleuri" 
-              className="w-full h-full object-cover object-center scale-110"
-              referrerPolicy="no-referrer"
-            />
-            {/* Gradients for text contrast */}
-            <div className="absolute inset-0 bg-gradient-to-b from-brand-teal/80 via-transparent to-brand-teal/20 lg:hidden" />
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-teal/60 via-transparent to-transparent hidden lg:block" />
+          <AnimatePresence mode="popLayout" initial={false}>
+            <motion.div 
+              key={currentIdx}
+              initial={{ opacity: 0, scale: 1.1 }}
+              animate={{ opacity: 1, scale: 1.05 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
+              className="w-full h-full relative"
+            >
+              <img 
+                src={images[currentIdx]} 
+                alt="Cabinet Vétérinaire Val Fleuri" 
+                className="w-full h-full object-cover object-center"
+                referrerPolicy="no-referrer"
+              />
+              {/* Gradients for text contrast */}
+              <div className="absolute inset-0 bg-gradient-to-b from-brand-teal/80 via-transparent to-brand-teal/20 lg:hidden" />
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-teal/60 via-transparent to-transparent hidden lg:block" />
+            </motion.div>
+          </AnimatePresence>
+          
+          {/* Slider Indicators */}
+          <div className="absolute bottom-10 right-10 z-20 flex gap-3">
+            {images.map((_, idx) => (
+              <button 
+                key={idx}
+                onClick={() => setCurrentIdx(idx)}
+                className={`group relative h-2 transition-all duration-500 overflow-hidden ${idx === currentIdx ? 'w-12 bg-white' : 'w-3 bg-white/30 hover:bg-white/50'} rounded-full`}
+                aria-label={`Go to slide ${idx + 1}`}
+              >
+                {idx === currentIdx && (
+                  <motion.div 
+                    layoutId="progress"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 5, ease: "linear" }}
+                    className="absolute inset-0 bg-white"
+                  />
+                )}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -292,16 +350,12 @@ const Hero = () => {
               <Phone size={18} className="group-hover:rotate-12 transition-transform" />
               Appelez-nous
             </a>
-            <a 
-              href="#contact"
-              onClick={(e) => {
-                e.preventDefault();
-                document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
-              }}
+            <button 
+              onClick={onOpenAppointment}
               className="w-full sm:w-auto bg-white/10 backdrop-blur-md text-white border-2 border-white/20 px-14 py-6 rounded-2xl font-black text-xs shadow-2xl hover:bg-white hover:text-brand-navy transition-all transform hover:-translate-y-1.5 uppercase tracking-widest text-center"
             >
               Prendre RDV
-            </a>
+            </button>
           </motion.div>
         </motion.div>
       </div>
@@ -965,37 +1019,83 @@ const ContactSection = () => (
   </section>
 );
 
-const BottomCTA = () => (
-  <div className="fixed bottom-6 left-4 right-4 z-[90] lg:hidden flex gap-3 pointer-events-auto safe-bottom">
-    <a 
-      href="tel:+212522252472"
-      className="flex-1 bg-brand-navy text-white h-14 rounded-2xl flex items-center justify-center gap-2 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] font-bold uppercase tracking-widest text-[10px] active:scale-95 transition-all"
-    >
-      <Phone size={16} />
-      Appeler
-    </a>
-    <a 
-      href="#contact"
-      onClick={(e) => {
-        e.preventDefault();
-        const target = document.querySelector('#contact');
-        if (target) {
-            window.scrollTo({
-                top: target.getBoundingClientRect().top + window.scrollY - 80,
-                behavior: 'smooth'
-            });
-        }
-      }}
-      className="flex-1 bg-brand-teal text-white h-14 rounded-2xl flex items-center justify-center gap-2 shadow-[0_15px_30px_-5px_rgba(0,191,165,0.3)] font-bold uppercase tracking-widest text-[10px] active:scale-95 transition-all"
-    >
-      <Mail size={16} />
-      RDV
-    </a>
-  </div>
-);
+const BottomCTA = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
+  return (
+    <div className="fixed bottom-6 left-4 right-4 z-[90] lg:hidden flex gap-3 pointer-events-auto safe-bottom">
+      <a 
+        href="tel:+212522252472"
+        className="flex-1 bg-brand-navy text-white h-14 rounded-2xl flex items-center justify-center gap-2 shadow-[0_15px_30px_-5px_rgba(0,0,0,0.3)] font-bold uppercase tracking-widest text-[10px] active:scale-95 transition-all"
+      >
+        <Phone size={16} />
+        Appeler
+      </a>
+      <button 
+        onClick={onOpenAppointment}
+        className="flex-1 bg-brand-teal text-white h-14 rounded-2xl flex items-center justify-center gap-2 shadow-[0_15px_30px_-5px_rgba(0,191,165,0.3)] font-bold uppercase tracking-widest text-[10px] active:scale-95 transition-all"
+      >
+        <Mail size={16} />
+        RDV
+      </button>
+    </div>
+  );
+};
+
+const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose: () => void; title: string, children: React.ReactNode }) => {
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-brand-navy/60 backdrop-blur-md"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="bg-white w-full max-w-xl rounded-[40px] shadow-2xl relative z-10 overflow-hidden border border-brand-stone"
+          >
+            <div className="p-8 md:p-12">
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="text-3xl font-extrabold text-brand-navy tracking-tight">{title}</h3>
+                <button 
+                  onClick={onClose}
+                  className="w-12 h-12 bg-brand-stone rounded-2xl flex items-center justify-center text-brand-navy hover:bg-brand-teal hover:text-white transition-all shadow-sm"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              {children}
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+};
 
 export default function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<'appointment' | 'emergency' | null>(null);
+
+  const openAppointmentModal = () => {
+    setModalType('appointment');
+    setIsModalOpen(true);
+  };
+
+  const openEmergencyModal = () => {
+    setModalType('emergency');
+    setIsModalOpen(true);
+  };
+
+  const closeModals = () => {
+    setIsModalOpen(false);
+    setModalType(null);
+  };
 
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 500);
@@ -1008,10 +1108,10 @@ export default function App() {
   return (
     <div className="relative font-sans antialiased text-brand-navy selection:bg-brand-teal selection:text-white bg-white">
       <TopBar />
-      <Navbar />
+      <Navbar onOpenAppointment={openAppointmentModal} />
       
       <main>
-        <Hero />
+        <Hero onOpenAppointment={openAppointmentModal} />
         <AboutSection />
         <FeaturesSection />
         <ServicesGrid />
@@ -1022,6 +1122,69 @@ export default function App() {
       </main>
 
       <Footer />
+
+      <Modal 
+        isOpen={isModalOpen && modalType === 'appointment'} 
+        onClose={closeModals} 
+        title="Prendre RDV"
+      >
+        <div className="space-y-6">
+          <p className="text-brand-slate font-medium">Réservez votre créneau en quelques secondes.</p>
+          <form className="space-y-4" onSubmit={(e) => { e.preventDefault(); closeModals(); alert('Demande de RDV envoyée !'); }}>
+            <input type="text" placeholder="Nom de l'animal" className="w-full bg-brand-stone/50 border-2 border-transparent rounded-2xl p-4 focus:bg-white focus:border-brand-teal outline-none transition-all placeholder:text-brand-slate/40 text-sm" required />
+            <input type="tel" placeholder="Votre numéro de téléphone" className="w-full bg-brand-stone/50 border-2 border-transparent rounded-2xl p-4 focus:bg-white focus:border-brand-teal outline-none transition-all placeholder:text-brand-slate/40 text-sm" required />
+            <select className="w-full bg-brand-stone/50 border-2 border-transparent rounded-2xl p-4 focus:bg-white focus:border-brand-teal outline-none transition-all text-brand-slate text-sm">
+                <option>Consultation (30 min)</option>
+                <option>Vaccination</option>
+                <option>Contrôle annuel</option>
+            </select>
+            <button className="w-full bg-brand-teal text-white font-bold py-5 rounded-2xl transition-all shadow-xl shadow-brand-teal/20 uppercase tracking-[0.2em] text-xs">
+              Envoyer la demande
+            </button>
+          </form>
+        </div>
+      </Modal>
+
+      <Modal 
+        isOpen={isModalOpen && modalType === 'emergency'} 
+        onClose={closeModals} 
+        title="Urgence Médicale"
+      >
+        <div className="space-y-8">
+          <div className="bg-red-50 border-2 border-red-100 p-6 rounded-3xl flex items-start gap-5">
+            <div className="w-12 h-12 bg-red-500 rounded-2xl flex items-center justify-center shrink-0 shadow-lg text-white">
+              <Phone size={24} />
+            </div>
+            <div>
+              <h4 className="font-bold text-red-900 mb-1">Ligne Directe Urgence</h4>
+              <p className="text-red-700 font-bold text-2xl">+212 5 22 25 24 72</p>
+              <p className="text-red-600/70 text-sm font-medium mt-2">Disponible pendant les heures d'ouverture pour les cas critiques.</p>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <h4 className="font-bold text-brand-navy flex items-center gap-2">
+              <Activity size={18} className="text-red-500" />
+              Signes d'alerte immédiate :
+            </h4>
+            <ul className="grid grid-cols-1 gap-2">
+              {['Difficulté respiratoire', 'Hémorragie importante', 'Ingestion de poison', 'Inconscience', 'Convulsions'].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-brand-slate text-sm font-medium bg-brand-stone/40 p-3 rounded-xl border border-brand-stone">
+                  <div className="w-1.5 h-1.5 bg-red-400 rounded-full" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <button 
+            onClick={closeModals}
+            className="w-full bg-brand-navy text-white font-bold py-5 rounded-2xl transition-all shadow-xl shadow-brand-navy/10 uppercase tracking-[0.2em] text-xs"
+          >
+            Fermer
+          </button>
+        </div>
+      </Modal>
 
       {/* Floating Action Buttons for Desktop */}
       <div className="fixed bottom-8 right-8 z-[100] hidden lg:flex flex-col space-y-4">
@@ -1040,6 +1203,14 @@ export default function App() {
           )}
         </AnimatePresence>
 
+        {/* Emergency Button */}
+        <button 
+          onClick={openEmergencyModal}
+          className="w-14 h-14 bg-red-500 text-white rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 hover:bg-red-600 active:scale-95 transition-all animate-pulse"
+        >
+          <Activity size={28} />
+        </button>
+
         {/* WhatsApp Button */}
         <button className="w-16 h-16 bg-[#25D366] text-white rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all">
           <MessageCircle size={36} />
@@ -1053,7 +1224,7 @@ export default function App() {
         </button>
       </div>
 
-      <BottomCTA />
+      <BottomCTA onOpenAppointment={openAppointmentModal} />
     </div>
   );
 }
