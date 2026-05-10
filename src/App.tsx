@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-const TopBar = () => (
+const TopBar = ({ onOpenSubscription }: { onOpenSubscription?: () => void }) => (
   <div className="bg-brand-teal-dark text-white/90 py-2.5 px-4 md:px-8 hidden lg:flex justify-between items-center text-[11px] font-medium border-b border-white/10 uppercase tracking-widest">
     <div className="flex items-center space-x-10">
       <a 
@@ -40,14 +40,14 @@ const TopBar = () => (
         className="flex items-center space-x-2 hover:text-white transition-colors"
       >
         <MapPin size={12} className="text-white" />
-        <span>43 Rue Ahmed El Kadmiri, Maarif Casablanca</span>
+        <span>Votre Adresse, Casablanca, Maroc</span>
       </a>
       <a 
-        href="mailto:contact@vetvalfleuri.ma" 
+        href="mailto:contact@votre-clinique.ma" 
         className="flex items-center space-x-2 hover:text-white transition-colors"
       >
         <Mail size={12} className="text-white" />
-        <span>contact@vetvalfleuri.ma</span>
+        <span>contact@votre-clinique.ma</span>
       </a>
       <a 
         href="tel:+212522252472" 
@@ -58,8 +58,17 @@ const TopBar = () => (
       </a>
     </div>
     <div className="flex items-center space-x-6">
-      <a href="#" className="hover:text-white transition-colors"><Facebook size={16} /></a>
-      <a href="#" className="hover:text-white transition-colors"><Instagram size={16} /></a>
+      <button 
+        onClick={onOpenSubscription}
+        className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-brand-teal/20 transition-all group scale-105"
+      >
+        <Sparkles size={12} className="text-amber-400" />
+        <span className="text-white/90 group-hover:text-white font-black tracking-tight">Membre Premium</span>
+      </button>
+      <div className="flex items-center space-x-4">
+        <a href="#" className="hover:text-white transition-colors"><Facebook size={16} /></a>
+        <a href="#" className="hover:text-white transition-colors"><Instagram size={16} /></a>
+      </div>
     </div>
   </div>
 );
@@ -142,7 +151,7 @@ const Navbar = ({ onOpenAppointment, onOpenEmergency }: { onOpenAppointment?: ()
               Cabinet vétérinaire
             </span>
             <h1 className={`text-xl lg:text-2xl font-bold tracking-tight leading-none ${isScrolled ? 'text-brand-navy' : 'text-white'}`}>
-              Val Fleuri
+              Cabinet Vétérinaire
             </h1>
           </div>
         </div>
@@ -317,7 +326,7 @@ const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
             >
               <img 
                 src={images[currentIdx]} 
-                alt="Cabinet Vétérinaire Val Fleuri" 
+                alt="Cabinet Vétérinaire" 
                 className="w-full h-full object-cover object-center"
                 referrerPolicy="no-referrer"
               />
@@ -504,7 +513,7 @@ const AboutSection = () => {
                 >
                   <img 
                     src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=1200" 
-                    alt="Cabinet Vétérinaire Val Fleuri" 
+                    alt="Cabinet Vétérinaire" 
                     className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1"
                   />
                   
@@ -552,12 +561,11 @@ const AboutSection = () => {
 
             <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl mb-8 text-brand-navy font-black tracking-tighter leading-[0.95]">
               Bienvenue au <br />
-              <span className="font-serif italic text-brand-teal font-normal underline decoration-brand-teal/20 underline-offset-8">Cabinet Vétérinaire</span> <br />
-              Val Fleuri
+              <span className="font-serif italic text-brand-teal font-normal underline decoration-brand-teal/20 underline-offset-8">Cabinet Vétérinaire</span>
             </motion.h2>
 
             <motion.p variants={itemVariants} className="text-brand-slate text-lg lg:text-xl mb-10 leading-relaxed font-medium opacity-80 max-w-xl">
-              L'adresse de référence pour le bien-être animal à Casablanca. 
+              L'adresse de référence pour le bien-être animal. 
               Une alliance unique entre <span className="text-brand-navy font-bold">expertise de pointe</span> et une approche profondément humaine.
             </motion.p>
 
@@ -593,7 +601,7 @@ const AboutSection = () => {
                 </div>
                 <div className="text-[11px] font-bold text-brand-slate">
                   <span className="text-brand-navy font-black block">+2500 Clients</span> 
-                  Satisfaits à Casablanca
+                  Satisfaits de nos services
                 </div>
               </div>
             </motion.div>
@@ -622,7 +630,7 @@ const FeaturesSection = () => {
     {
       title: "Imagerie Médicale",
       desc: "Plateau technique de dernière génération.",
-      img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=800",
+      img: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=800",
       icon: <HeartPulse className="text-white" size={32} />
     }
   ];
@@ -818,7 +826,7 @@ const Testimonials = () => {
     {
       name: "Saara",
       role: "Propriétaire d'animaux",
-      quote: "Le meilleure cabinet vétérinaire à Casablanca ! Dr Kenza est juste merveilleuse avec nos petits compagnons. Elle prend tout son temps et son suivi est très personnalisé."
+      quote: "Le meilleure cabinet vétérinaire de la ville ! Notre équipe est juste merveilleuse avec nos petits compagnons. Elle prend tout son temps et son suivi est très personnalisé."
     },
     {
       name: "Ahmed",
@@ -922,12 +930,12 @@ const Footer = () => (
             <PawPrint className="text-white" size={28} />
           </div>
           <div>
-            <h4 className="text-xl font-bold tracking-tight leading-none uppercase">Val Fleuri</h4>
+            <h4 className="text-xl font-bold tracking-tight leading-none uppercase">Cabinet Vétérinaire</h4>
             <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-brand-teal mt-1">Clinique Vétérinaire</p>
           </div>
         </div>
         <p className="text-brand-stone/60 leading-relaxed mb-8 font-medium italic font-serif">
-          "La Clinique Val Fleuri allie expertise médicale de pointe et approche humaine pour le bien-être de vos fidèles compagnons."
+          "Notre clinique allie expertise médicale de pointe et approche humaine pour le bien-être de vos fidèles compagnons."
         </p>
         <div className="flex items-center space-x-4">
           <a href="#" className="w-12 h-12 border-2 border-white/5 rounded-2xl flex items-center justify-center hover:bg-brand-teal hover:border-brand-teal transition-all duration-300"><Facebook size={20} /></a>
@@ -960,7 +968,7 @@ const Footer = () => (
         <ul className="space-y-5 text-brand-stone/60 font-medium text-sm">
           <li className="flex items-start gap-4">
             <MapPin className="text-brand-teal shrink-0" size={20} />
-            <span className="text-sm">43 Rue Ahmed El Kadmiri, Maarif Casablanca</span>
+            <span className="text-sm">Votre Adresse, Casablanca, Maroc</span>
           </li>
           <li className="flex items-center gap-4">
             <Phone className="text-brand-teal shrink-0" size={20} />
@@ -968,13 +976,13 @@ const Footer = () => (
           </li>
           <li className="flex items-center gap-4">
             <Mail className="text-brand-teal shrink-0" size={20} />
-            <span className="text-sm">contact@vetvalfleuri.ma</span>
+            <span className="text-sm">contact@votre-clinique.ma</span>
           </li>
         </ul>
       </div>
     </div>
     <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center text-brand-stone/40 text-[10px] font-bold uppercase tracking-widest">
-      <p>© {new Date().getFullYear()} Cabinet Vétérinaire Val Fleuri.</p>
+      <p>© {new Date().getFullYear()} Cabinet Vétérinaire.</p>
       <div className="flex gap-8 mt-4 md:mt-0">
         <a href="#" className="hover:text-brand-teal transition-colors">Mentions Légales</a>
         <a href="#" className="hover:text-brand-teal transition-colors">Politique de Confidentialité</a>
@@ -989,9 +997,9 @@ const BeforeAfterGallery = () => {
       id: 1,
       name: "Tobby",
       treatment: "Dermatologie & Soin du pelage",
-      before: "https://images.unsplash.com/photo-1591768793355-74d75b0caec2?auto=format&fit=crop&q=80&w=800",
-      after: "https://images.unsplash.com/photo-1541364983171-a8ba01d95cfc?auto=format&fit=crop&q=80&w=800",
-      description: "Traitement intensif d'une allergie cutanée sévère. Tobby a retrouvé un poil brillant et une peau saine."
+      before: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=800",
+      after: "https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?auto=format&fit=crop&q=80&w=800",
+      description: "Traitement intensif d'une allergie cutanée sévère. Grâce à un protocole personnalisé, Tobby a retrouvé un poil brillant, une vitalité exceptionnelle et une peau parfaitement saine."
     },
     {
       id: 2,
@@ -1141,7 +1149,7 @@ const ContactSection = () => (
               </div>
               <div>
                 <h4 className="font-bold text-lg text-brand-navy">Adresse</h4>
-                <p className="text-brand-slate font-medium">43 Rue Ahmed El Kadmiri, Maarif Casablanca</p>
+                <p className="text-brand-slate font-medium">Votre Adresse, Casablanca, Maroc</p>
               </div>
             </div>
           </div>
@@ -1226,9 +1234,9 @@ const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose:
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="bg-white w-full max-w-xl rounded-[48px] shadow-2xl relative z-10 overflow-hidden border border-brand-stone"
+            className="bg-white w-full max-w-lg rounded-[42px] shadow-2xl relative z-10 overflow-hidden border border-brand-stone"
           >
-            <div className="p-8 md:p-14">
+            <div className="p-6 md:p-10">
               <div className="flex justify-between items-center mb-10">
                 <div className="space-y-1">
                   <h3 className="text-3xl font-black text-brand-navy tracking-tight leading-none">{title}</h3>
@@ -1253,7 +1261,7 @@ const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose:
 export default function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<'appointment' | 'emergency' | null>(null);
+  const [modalType, setModalType] = useState<'appointment' | 'emergency' | 'subscription' | null>(null);
 
   const openAppointmentModal = () => {
     setModalType('appointment');
@@ -1265,6 +1273,11 @@ export default function App() {
     setIsModalOpen(true);
   };
 
+  const openSubscriptionModal = () => {
+    setModalType('subscription');
+    setIsModalOpen(true);
+  };
+
   const closeModals = () => {
     setIsModalOpen(false);
     setModalType(null);
@@ -1273,14 +1286,23 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 500);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    
+    // Auto-popup for subscription after 5 seconds
+    const subTimer = setTimeout(() => {
+      openSubscriptionModal();
+    }, 5000);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(subTimer);
+    };
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <div className="relative font-sans antialiased text-brand-navy selection:bg-brand-teal selection:text-white bg-white">
-      <TopBar />
+      <TopBar onOpenSubscription={openSubscriptionModal} />
       <Navbar onOpenAppointment={openAppointmentModal} onOpenEmergency={openEmergencyModal} />
       
       <main>
@@ -1357,6 +1379,55 @@ export default function App() {
           >
             Fermer
           </button>
+        </div>
+      </Modal>
+
+      <Modal 
+        isOpen={isModalOpen && modalType === 'subscription'} 
+        onClose={closeModals} 
+        title="Pass Santé Annuel"
+      >
+        <div className="text-center">
+          <div className="w-20 h-20 bg-gradient-to-tr from-brand-teal to-brand-teal-dark rounded-[28px] flex items-center justify-center mx-auto mb-6 shadow-2xl relative">
+            <div className="absolute inset-0 bg-white/20 rounded-[28px] blur-xl animate-pulse" />
+            <Sparkles className="text-white relative z-10" size={40} />
+          </div>
+          
+          <h4 className="text-2xl font-black text-brand-navy mb-3 tracking-tight leading-none">
+            Abonnement <span className="text-brand-teal italic font-serif">Privilège</span>
+          </h4>
+          
+          <p className="text-brand-slate font-medium mb-8 text-base">
+            Offrez une tranquillité d'esprit totale à votre compagnon pour seulement <span className="text-brand-navy font-black">1500 MAD / an</span>
+          </p>
+
+          <div className="grid gap-3 mb-10 text-left">
+            {[
+              "Consultations illimitées (Générale & NAC)",
+              "Priorité absolue sur tous les rendez-vous",
+              "Bilan biologique complet inclus 1x/an",
+              "Support WhatsApp dédié 24h/24"
+            ].map((benefit, i) => (
+              <div key={i} className="flex items-center gap-3 p-4 bg-brand-stone/40 rounded-2xl border border-white/50 group hover:bg-white hover:shadow-xl transition-all">
+                <div className="w-8 h-8 bg-brand-teal/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-brand-teal transition-all">
+                  <Check size={14} className="text-brand-teal group-hover:text-white" />
+                </div>
+                <span className="text-xs font-bold text-brand-navy/80">{benefit}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-4">
+            <button 
+              onClick={() => { closeModals(); alert('Merci de votre intérêt ! Notre équipe vous contactera pour finaliser votre adhésion.'); }}
+              className="w-full bg-brand-navy text-white font-black py-5 rounded-2xl shadow-2xl hover:bg-brand-teal transform hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]"
+            >
+              Devenir Membre Premium
+            </button>
+            <p className="text-[9px] text-brand-slate font-bold uppercase tracking-widest opacity-40">
+              Engagement de 12 mois • Résiliable à tout moment
+            </p>
+          </div>
         </div>
       </Modal>
 
