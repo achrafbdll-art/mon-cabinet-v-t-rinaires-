@@ -618,7 +618,7 @@ const FeaturesSection = () => {
     {
       title: "Médecine & Chirurgie",
       desc: "Consultations générales et spécialisées.",
-      img: "https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?auto=format&fit=crop&q=80&w=800",
+      img: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&q=80&w=800",
       icon: <Stethoscope className="text-white" size={32} />
     },
     {
