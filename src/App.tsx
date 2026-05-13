@@ -630,7 +630,7 @@ const FeaturesSection = () => {
     {
       title: "Imagerie Médicale",
       desc: "Plateau technique de dernière génération.",
-      img: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=800",
+      img: "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&q=80&w=800",
       icon: <HeartPulse className="text-white" size={32} />
     }
   ];
@@ -864,7 +864,7 @@ const Testimonials = () => {
             <div className="absolute inset-0 bg-brand-teal-dark rounded-3xl translate-x-4 translate-y-4 -z-10" />
             <div className="aspect-[4/5] rounded-3xl overflow-hidden border-4 border-white shadow-2xl">
               <img 
-                src="https://images.unsplash.com/photo-1581888227599-779811939961?auto=format&fit=crop&q=80&w=800" 
+                src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=1200" 
                 className="w-full h-full object-cover" 
                 alt="Golden Retriever at vet" 
               />
