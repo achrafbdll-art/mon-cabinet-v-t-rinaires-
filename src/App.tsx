@@ -24,51 +24,43 @@ import {
   ChevronRight,
   ArrowUp,
   MousePointer2,
-  Sparkles,
-  Heart,
-  Check
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
-const TopBar = ({ onOpenSubscription }: { onOpenSubscription?: () => void }) => (
+const TopBar = () => (
   <div className="bg-brand-teal-dark text-white/90 py-2.5 px-4 md:px-8 hidden lg:flex justify-between items-center text-[11px] font-medium border-b border-white/10 uppercase tracking-widest">
     <div className="flex items-center space-x-10">
-      <a 
+      <motion.a 
         href="https://goo.gl/maps/XYZ" 
         target="_blank" 
         rel="noopener noreferrer"
+        whileHover={{ x: 5 }}
         className="flex items-center space-x-2 hover:text-white transition-colors"
       >
         <MapPin size={12} className="text-white" />
-        <span>Votre Adresse, Casablanca, Maroc</span>
-      </a>
-      <a 
-        href="mailto:contact@votre-clinique.ma" 
+        <span>43 Rue Ahmed El Kadmiri, Maarif Casablanca</span>
+      </motion.a>
+      <motion.a 
+        href="mailto:contact@vetvalfleuri.ma" 
+        whileHover={{ x: 5 }}
         className="flex items-center space-x-2 hover:text-white transition-colors"
       >
         <Mail size={12} className="text-white" />
-        <span>contact@votre-clinique.ma</span>
-      </a>
-      <a 
+        <span>contact@vetvalfleuri.ma</span>
+      </motion.a>
+      <motion.a 
         href="tel:+212522252472" 
+        whileHover={{ x: 5 }}
         className="flex items-center space-x-2 hover:text-white transition-colors"
       >
         <Phone size={12} className="text-white" />
         <span>+212 5 22 25 24 72</span>
-      </a>
+      </motion.a>
     </div>
     <div className="flex items-center space-x-6">
-      <button 
-        onClick={onOpenSubscription}
-        className="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full hover:bg-brand-teal/20 transition-all group scale-105"
-      >
-        <Sparkles size={12} className="text-amber-400" />
-        <span className="text-white/90 group-hover:text-white font-black tracking-tight">Membre Premium</span>
-      </button>
-      <div className="flex items-center space-x-4">
-        <a href="#" className="hover:text-white transition-colors"><Facebook size={16} /></a>
-        <a href="#" className="hover:text-white transition-colors"><Instagram size={16} /></a>
-      </div>
+      <a href="#" className="hover:text-white transition-colors"><Facebook size={16} /></a>
+      <a href="#" className="hover:text-white transition-colors"><Instagram size={16} /></a>
     </div>
   </div>
 );
@@ -131,12 +123,10 @@ const Navbar = ({ onOpenAppointment, onOpenEmergency }: { onOpenAppointment?: ()
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white/95 backdrop-blur-md shadow-xl py-3 border-b border-brand-teal/5' : 'bg-transparent py-6 lg:top-10'}`}>
       {/* Scroll Progress Bar */}
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-brand-teal/10 z-[60]">
-        <motion.div 
-          className="h-full bg-brand-teal origin-left"
-          style={{ scaleX: scrollProgress }}
-        />
-      </div>
+      <motion.div 
+        className="absolute top-0 left-0 right-0 h-[3px] bg-brand-teal z-[60] origin-left"
+        style={{ scaleX: scrollProgress }}
+      />
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex justify-between items-center">
         {/* Logo */}
         <div 
@@ -151,18 +141,32 @@ const Navbar = ({ onOpenAppointment, onOpenEmergency }: { onOpenAppointment?: ()
               Cabinet vétérinaire
             </span>
             <h1 className={`text-xl lg:text-2xl font-bold tracking-tight leading-none ${isScrolled ? 'text-brand-navy' : 'text-white'}`}>
-              Cabinet Vétérinaire
+              Val Fleuri
             </h1>
           </div>
         </div>
 
         {/* Desktop Links */}
-        <div className="hidden lg:flex items-center space-x-10">
+        <motion.div 
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.1, delayChildren: 0.1 }
+            }
+          }}
+          className="hidden lg:flex items-center space-x-10"
+        >
           {navLinks.map((link) => (
-            <a 
+            <motion.a 
               key={link.name} 
               href={link.href} 
-              onClick={(e) => {
+              variants={{
+                hidden: { opacity: 0, y: -10 },
+                visible: { opacity: 1, y: 0 }
+              }}              onClick={(e) => {
                 if (link.isEmergency) {
                   e.preventDefault();
                   onOpenEmergency?.();
@@ -190,26 +194,15 @@ const Navbar = ({ onOpenAppointment, onOpenEmergency }: { onOpenAppointment?: ()
                   className="w-1.5 h-1.5 bg-red-500 rounded-full" 
                 />
               )}
-            </a>
+            </motion.a>
           ))}
           <button 
             onClick={onOpenAppointment}
-            className={`px-6 py-2.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all duration-300 relative group overflow-hidden ${
-              isScrolled 
-                ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20 hover:bg-brand-teal-dark' 
-                : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white hover:text-brand-teal'
-            }`}
+            className={`px-6 py-2.5 rounded-xl font-bold text-[11px] uppercase tracking-widest transition-all ${isScrolled ? 'bg-brand-teal text-white shadow-lg shadow-brand-teal/20' : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white hover:text-brand-teal'}`}
           >
-            <span className="relative z-10">RDV</span>
-            {!isScrolled && (
-              <motion.div 
-                animate={{ x: ['-100%', '100%'] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
-              />
-            )}
+            RDV
           </button>
-        </div>
+        </motion.div>
 
         {/* Mobile Toggle */}
         <button 
@@ -287,8 +280,8 @@ const Navbar = ({ onOpenAppointment, onOpenEmergency }: { onOpenAppointment?: ()
 
 const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
   const images = [
-    "https://images.unsplash.com/photo-1606425271394-c3ca9aa1fc06?auto=format&fit=crop&q=80&w=2000",
-    "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=2000"
+    "https://images.unsplash.com/photo-1548191265-cc70d3d45bc1?auto=format&fit=crop&q=80&w=2000",
+    "https://images.unsplash.com/photo-1583511655826-05700d52f4d9?auto=format&fit=crop&q=80&w=2000"
   ];
   
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -307,7 +300,11 @@ const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
         <div className="absolute inset-0 bg-brand-teal" />
         
         {/* Paw Print (Zellige Style) Overlay */}
-        <div className="absolute inset-0 opacity-[0.15] pointer-events-none z-[1]" 
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.15 }}
+          transition={{ duration: 2 }}
+          className="absolute inset-0 pointer-events-none z-[1]" 
           style={{ 
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 10c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-8 4c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm16 0c2.2 0 4-1.8 4-4s-1.8-4-4-4-4 1.8-4 4 1.8 4 4 4zm-8 22c5.5 0 10-4.5 10-10 0-3.3-2.7-6-6-6h-8c-3.3 0-6 2.7-6 6 0 5.5 4.5 10 10 10z' fill='%23ffffff'/%3E%3C/svg%3E")`,
             backgroundSize: '100px 100px'
@@ -318,15 +315,15 @@ const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.div 
               key={currentIdx}
-              initial={{ opacity: 0, scale: 1.15, filter: 'blur(10px)' }}
-              animate={{ opacity: 1, scale: 1.05, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, scale: 1.2, filter: 'blur(10px)' }}
-              transition={{ duration: 1.8, ease: [0.4, 0, 0.2, 1] }}
+              initial={{ opacity: 0, scale: 1.15, filter: "blur(10px)" }}
+              animate={{ opacity: 1, scale: 1.05, filter: "blur(0px)" }}
+              exit={{ opacity: 0, scale: 1, filter: "blur(5px)" }}
+              transition={{ duration: 1.8, ease: [0.43, 0.13, 0.23, 0.96] }}
               className="w-full h-full relative"
             >
               <img 
                 src={images[currentIdx]} 
-                alt="Cabinet Vétérinaire" 
+                alt="Cabinet Vétérinaire Val Fleuri" 
                 className="w-full h-full object-cover object-center"
                 referrerPolicy="no-referrer"
               />
@@ -389,10 +386,23 @@ const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
               hidden: { opacity: 0, y: 30 },
               visible: { opacity: 1, y: 0 }
             }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="text-[40px] sm:text-5xl md:text-7xl lg:text-[84px] xl:text-[96px] font-black text-white leading-[1.1] lg:leading-[1.05] mb-10 lg:mb-14 tracking-tighter drop-shadow-2xl"
           >
-            Des soins d'exception pour vos <span className="font-serif italic text-white/90">compagnons de vie</span>
+            {"Des soins d'exception pour vos ".split(" ").map((word, i) => (
+              <motion.span 
+                key={i} 
+                className="inline-block mr-[0.2em]"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                transition={{ delay: i * 0.05 }}
+              >
+                {word}
+              </motion.span>
+            ))}
+            <span className="font-serif italic text-white/90">compagnons de vie</span>
           </motion.h1>
           
           <motion.div 
@@ -439,219 +449,144 @@ const Hero = ({ onOpenAppointment }: { onOpenAppointment?: () => void }) => {
   );
 };
 
-const AboutSection = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
-    }
-  };
-
-  return (
-    <section className="py-24 lg:py-32 bg-white relative overflow-hidden" id="about">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-stone/10 -skew-x-12 translate-x-1/2 pointer-events-none" />
-      
-      <div className="container mx-auto px-4 md:px-8 relative">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          {/* Left Side: Creative Image Composition */}
-          <div className="relative order-2 lg:order-1">
-            <motion.div 
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
-              className="relative"
-            >
-              {/* Floating Dots Background */}
-              <div className="absolute -top-10 -left-10 text-brand-teal opacity-20 hidden md:block">
-                <div className="grid grid-cols-6 gap-3">
-                  {[...Array(36)].map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-current" />)}
-                </div>
-              </div>
-
-              {/* Main Animated Blob Container */}
-              <motion.div 
-                animate={{ 
-                  y: [0, -20, 0],
-                  rotate: [0, 1, 0]
-                }}
-                transition={{ 
-                  duration: 6, 
-                  repeat: Infinity, 
-                  ease: "easeInOut" 
-                }}
-                className="relative z-10 mx-auto lg:mx-0 w-full max-w-[540px]"
-              >
-                <motion.div 
-                  className="relative aspect-square overflow-hidden shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] border-[12px] border-white/50 backdrop-blur-sm group"
-                  animate={{
-                    borderRadius: [
-                      "40% 60% 70% 30% / 40% 50% 60% 50%",
-                      "60% 40% 30% 70% / 50% 30% 70% 50%",
-                      "40% 60% 70% 30% / 40% 50% 60% 50%"
-                    ]
-                  }}
-                  transition={{ 
-                    duration: 10, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
-                  }}
-                >
-                  <img 
-                    src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?auto=format&fit=crop&q=80&w=2000" 
-                    alt="Cabinet Vétérinaire" 
-                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-110 group-hover:rotate-1"
-                  />
-                  
-                  {/* Subtle Overlay */}
-                  <div className="absolute inset-0 bg-brand-navy/5 group-hover:bg-transparent transition-colors duration-500" />
-                </motion.div>
-
-                {/* Floating Tag */}
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 1 }}
-                  className="absolute -bottom-6 -left-6 md:left-10 bg-white p-6 rounded-3xl shadow-2xl z-20 hidden sm:flex items-center gap-4 border border-brand-stone"
-                >
-                  <div className="w-12 h-12 bg-brand-teal/10 rounded-2xl flex items-center justify-center text-brand-teal">
-                    <Heart className="animate-pulse" size={24} />
-                  </div>
-                  <div>
-                    <p className="font-black text-brand-navy leading-none">15+ Ans</p>
-                    <p className="text-[10px] text-brand-slate uppercase font-bold tracking-widest mt-1">D'Expertise</p>
-                  </div>
-                </motion.div>
-              </motion.div>
-
-              {/* Decorative Circle */}
-              <div className="absolute -bottom-12 -right-12 w-48 h-48 border-2 border-brand-teal/10 rounded-full hidden lg:block" />
-            </motion.div>
+const AboutSection = () => (
+  <section className="py-16 lg:py-24 bg-white" id="about">
+    <div className="container mx-auto px-4 md:px-8 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="relative order-2 lg:order-1"
+        >
+          <div className="absolute -top-6 -left-6 text-brand-teal opacity-20">
+            <div className="grid grid-cols-4 gap-2">
+              {[...Array(16)].map((_, i) => <div key={i} className="w-2 h-2 rounded-full bg-current" />)}
+            </div>
           </div>
-
-          {/* Right Side: Content */}
           <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            className="order-1 lg:order-2"
+            whileHover={{ scale: 1.02 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            className="relative z-10 overflow-hidden aspect-square max-w-[320px] sm:max-w-[450px] lg:max-w-[500px] mx-auto lg:mx-0 shadow-2xl rounded-[40%_60%_70%_30%/40%_50%_60%_50%] border-8 border-brand-stone/50 group"
           >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 bg-brand-teal/5 rounded-full mb-8">
-              <span className="w-2 h-2 bg-brand-teal rounded-full animate-ping" />
-              <span className="text-brand-teal font-black uppercase tracking-[0.2em] text-[10px]">
-                Découvrez notre univers
-              </span>
-            </motion.div>
-
-            <motion.h2 variants={itemVariants} className="text-4xl md:text-6xl mb-8 text-brand-navy font-black tracking-tighter leading-[0.95]">
-              Bienvenue au <br />
-              <span className="font-serif italic text-brand-teal font-normal underline decoration-brand-teal/20 underline-offset-8">Cabinet Vétérinaire</span>
-            </motion.h2>
-
-            <motion.p variants={itemVariants} className="text-brand-slate text-lg lg:text-xl mb-10 leading-relaxed font-medium opacity-80 max-w-xl">
-              L'adresse de référence pour le bien-être animal. 
-              Une alliance unique entre <span className="text-brand-navy font-bold">expertise de pointe</span> et une approche profondément humaine.
-            </motion.p>
-
-            <motion.div variants={itemVariants} className="space-y-6 mb-12">
-              {[
-                { title: "Excellence Médicale", desc: "Soins spécialisés et chirurgie de pointe." },
-                { title: "Animaux Exotiques", desc: "Expertise certifiée pour les Nouveaux Animaux de Compagnie (NAC)." },
-                { title: "Transparence Totale", desc: "Une communication claire pour des choix sereins." }
-              ].map((item, i) => (
-                <div key={i} className="flex items-start gap-5 group">
-                  <div className="mt-1 w-6 h-6 rounded-full border-2 border-brand-teal/30 flex items-center justify-center group-hover:bg-brand-teal group-hover:border-brand-teal transition-all flex-shrink-0">
-                    <Check size={12} className="text-brand-teal group-hover:text-white" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-brand-navy group-hover:text-brand-teal transition-colors">{item.title}</h4>
-                    <p className="text-sm text-brand-slate font-medium">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-6">
-              <button className="bg-brand-navy text-white font-black py-5 px-10 rounded-2xl transition-all shadow-2xl hover:bg-brand-teal transform hover:-translate-y-1 active:scale-95 uppercase tracking-widest text-xs">
-                En savoir plus
-              </button>
-              <div className="flex items-center gap-4">
-                <div className="flex -space-x-3">
-                  {[1,2,3].map(i => (
-                    <div key={i} className="w-10 h-10 rounded-full border-2 border-white overflow-hidden">
-                      <img src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Client" />
-                    </div>
-                  ))}
-                </div>
-                <div className="text-[11px] font-bold text-brand-slate">
-                  <span className="text-brand-navy font-black block">+2500 Clients</span> 
-                  Satisfaits de nos services
-                </div>
-              </div>
-            </motion.div>
+            <img 
+              src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&q=80&w=1200" 
+              alt="Expert Vet Care Excellence" 
+              className="w-full h-full object-cover object-center transition-transform duration-1000 group-hover:scale-110"
+            />
           </motion.div>
+          <div className="absolute -bottom-6 -right-6 text-brand-teal opacity-20">
+          <div className="grid grid-cols-4 gap-2">
+            {[...Array(16)].map((_, i) => <div key={i} className="w-2 h-2 rounded-full bg-current" />)}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-};
+      </motion.div>
 
+      <motion.div 
+        className="order-1 lg:order-2"
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
+        <span className="text-brand-teal font-bold uppercase tracking-widest text-[10px] mb-4 block">Découvrez notre univers</span>
+        <h2 className="text-3xl md:text-5xl mb-6 lg:mb-8 text-brand-navy leading-tight font-extrabold tracking-tight">
+          Bienvenue au <span className="font-serif italic text-brand-teal">Cabinet Vétérinaire</span> Val Fleuri
+        </h2>
+        <p className="text-brand-slate text-base lg:text-lg mb-6 lg:mb-8 leading-relaxed opacity-90">
+          l'adresse préférée des amoureux des animaux au Maroc ! Située au cœur de Casablanca, 
+          notre clinique vétérinaire allie expertise médicale, technologie de pointe et compassion pour 
+          offrir à vos compagnons à quatre pattes des soins sur mesure.
+        </p>
+
+        <ul className="space-y-5 mb-10">
+          {[
+            "Soins vétérinaires complets et spécialisés.",
+            "Expertise en animaux exotiques (NAC) et bien-être animal.",
+            "Services pratiques et transparents."
+          ].map((item, i) => (
+            <li key={i} className="flex items-center space-x-4 group">
+              <div className="text-brand-teal bg-brand-teal-light p-2 rounded-xl group-hover:scale-110 transition-transform">
+                <CheckCircle2 size={20} className="text-brand-teal" />
+              </div>
+              <span className="font-semibold text-brand-navy text-lg">{item}</span>
+            </li>
+          ))}
+        </ul>
+
+        <button className="bg-brand-teal-dark hover:bg-brand-teal text-white font-bold py-4 px-12 rounded-xl transition-all shadow-xl shadow-brand-teal-dark/10">
+          DÉCOUVREZ PLUS
+        </button>
+      </motion.div>
+    </div>
+  </section>
+);
 
 const FeaturesSection = () => {
   const features = [
     {
       title: "Médecine & Chirurgie",
       desc: "Consultations générales et spécialisées.",
-      img: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?auto=format&fit=crop&q=80&w=800",
+      img: "https://images.unsplash.com/photo-1596272875727-590fb4987770?auto=format&fit=crop&q=80&w=800",
       icon: <Stethoscope className="text-white" size={32} />
     },
     {
       title: "Notre mission",
       desc: "L'excellence au service du bien-être.",
-      img: "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&q=80&w=800",
+      img: "https://images.unsplash.com/photo-1526336024174-e58f5cdd8e13?auto=format&fit=crop&q=80&w=800",
       icon: <PawPrint className="text-white" size={32} />
     },
     {
       title: "Imagerie Médicale",
       desc: "Plateau technique de dernière génération.",
-      img: "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&q=80&w=800",
+      img: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&q=80&w=800",
       icon: <HeartPulse className="text-white" size={32} />
     }
   ];
 
   return (
-    <section className="bg-brand-teal-dark">
-      <div className="grid md:grid-cols-3">
+    <section className="bg-brand-teal-dark overflow-hidden">
+      <motion.div 
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2 }
+          }
+        }}
+        className="grid md:grid-cols-3"
+      >
         {features.map((feature, idx) => (
-          <div key={idx} className="relative group overflow-hidden h-[300px] md:h-[400px] lg:h-[450px]">
+          <motion.div 
+            key={idx} 
+            variants={{
+              hidden: { opacity: 0, y: 50 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+            }}
+            className="relative group overflow-hidden h-[300px] md:h-[400px] lg:h-[450px]"
+          >
             <img src={feature.img} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" alt={feature.title} />
             <div className="absolute inset-0 bg-brand-teal-dark/60 group-hover:bg-brand-teal-dark/40 transition-colors duration-500" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-8">
-              <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 border border-white/20">
+            <motion.div 
+              whileHover={{ y: -5 }}
+              className="absolute inset-0 flex flex-col items-center justify-center text-white text-center p-8"
+            >
+              <motion.div 
+                whileHover={{ rotate: 360, scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center mb-6 border border-white/20"
+              >
                 {feature.icon}
-              </div>
+              </motion.div>
               <h3 className="text-3xl font-extrabold mb-3 tracking-tight">{feature.title}</h3>
               <p className="opacity-80 text-lg max-w-[200px]">{feature.desc}</p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
       
       {/* Action Bar */}
       <div className="bg-white/5 backdrop-blur-sm border-t border-white/10">
@@ -724,14 +659,34 @@ const ServicesGrid = () => {
           <div className="h-1 w-20 bg-brand-teal mx-auto rounded-full opacity-30" />
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1,
+                delayChildren: 0.2
+              }
+            }
+          }}
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+        >
           {services.map((service, i) => (
             <motion.div 
               key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0, y: 30, scale: 0.95 },
+                visible: { 
+                  opacity: 1, 
+                  y: 0, 
+                  scale: 1,
+                  transition: { type: "spring", stiffness: 100, damping: 20 }
+                }
+              }}
               className="bg-white p-10 rounded-[40px] shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 border border-brand-stone/50 group h-full flex flex-col"
             >
               <div className="flex justify-between items-start mb-8">
@@ -745,26 +700,23 @@ const ServicesGrid = () => {
                 </span>
               </div>
               
-                <div className="flex-1 flex flex-col pt-2">
-                <h3 className="text-2xl mb-4 text-brand-navy font-black group-hover:text-brand-teal transition-colors leading-tight tracking-tight">
+              <div className="flex-1 flex flex-col">
+                <h3 className="text-2xl mb-4 text-brand-navy font-bold group-hover:text-brand-teal transition-colors leading-tight">
                   {service.title}
                 </h3>
-                <p className="text-brand-slate mb-8 leading-relaxed text-sm font-medium opacity-80 flex-1 group-hover:opacity-100 transition-opacity">
+                <p className="text-brand-slate mb-8 leading-relaxed text-sm font-medium opacity-80 flex-1">
                   {service.desc}
                 </p>
-                <div className="mt-auto overflow-hidden">
-                  <a href="#" className="inline-flex items-center text-brand-navy font-bold hover:text-brand-teal transition-all group/link uppercase tracking-widest text-[11px] pb-1">
-                   <span className="relative">
-                      En Savoir Plus 
-                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-teal transition-all group-hover/link:w-full" />
-                   </span>
+                <div className="mt-auto">
+                  <a href="#" className="inline-flex items-center text-brand-navy font-bold hover:text-brand-teal transition-colors group/link uppercase tracking-widest text-[11px] border-b-2 border-brand-teal/10 pb-1">
+                    En Savoir Plus 
                     <ArrowRight size={14} className="ml-2 group-hover/link:translate-x-2 transition-transform opacity-60" />
                   </a>
                 </div>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
@@ -781,7 +733,7 @@ const AboutMore = () => (
     />
     <div className="lg:w-1/2 relative h-[300px] md:h-[450px] lg:h-auto">
       <img 
-        src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?auto=format&fit=crop&q=80&w=1200" 
+        src="https://images.unsplash.com/photo-1597673030062-0a0f1a801a31?auto=format&fit=crop&q=80&w=1200" 
         className="w-full h-full object-cover object-center transition-all duration-700 hover:scale-105" 
         alt="Veterinary Care" 
       />
@@ -826,7 +778,7 @@ const Testimonials = () => {
     {
       name: "Saara",
       role: "Propriétaire d'animaux",
-      quote: "Le meilleure cabinet vétérinaire de la ville ! Notre équipe est juste merveilleuse avec nos petits compagnons. Elle prend tout son temps et son suivi est très personnalisé."
+      quote: "Le meilleure cabinet vétérinaire à Casablanca ! Dr Kenza est juste merveilleuse avec nos petits compagnons. Elle prend tout son temps et son suivi est très personnalisé."
     },
     {
       name: "Ahmed",
@@ -860,18 +812,37 @@ const Testimonials = () => {
 
         <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
           {/* Image Mockup */}
-          <div className="relative max-w-xs md:max-w-sm w-full">
+          <motion.div 
+            initial={{ opacity: 0, x: -50, rotate: -5 }}
+            whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="relative max-w-xs md:max-w-sm w-full"
+          >
             <div className="absolute inset-0 bg-brand-teal-dark rounded-3xl translate-x-4 translate-y-4 -z-10" />
             <div className="aspect-[4/5] rounded-3xl overflow-hidden border-4 border-white shadow-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=1200" 
-                className="w-full h-full object-cover" 
-                alt="Golden Retriever at vet" 
-              />
+              <AnimatePresence mode="wait">
+                <motion.img 
+                  key={active}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                  src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&q=80&w=800" 
+                  className="w-full h-full object-cover" 
+                  alt="Happy dog at vet" 
+                />
+              </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="max-w-2xl w-full bg-white p-12 md:p-20 rounded-[48px] shadow-2xl relative border border-brand-stone">
+          <motion.div 
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-2xl w-full bg-white p-12 md:p-20 rounded-[48px] shadow-2xl relative border border-brand-stone"
+          >
             <div className="absolute top-10 left-10 text-brand-teal-light">
               <svg width="80" height="80" viewBox="0 0 24 24" fill="currentColor" opacity="0.1">
                 <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C20.1216 16 21.017 16.8954 21.017 18V21C21.017 22.1046 20.1216 23 19.017 23H16.017C14.9124 23 14.017 22.1046 14.017 21ZM14.017 18V21C14.017 22.1046 14.9124 23 16.017 23H19.017C20.1216 23 21.017 22.1046 21.017 21V18C21.017 16.8954 20.1216 16 19.017 16H16.017C14.9124 16 14.017 16.8954 14.017 18ZM2 21L2 18C2 16.8954 2.89543 16 4 16H7C8.10457 16 9 16.8954 9 18V21C9 22.1046 8.10457 23 7 23H4C2.89543 23 2 22.1046 2 21ZM2 18V21C2 22.1046 2.89543 23 4 23H7C8.10457 23 9 22.1046 9 21V18C9 16.8954 8.10457 16 7 16H4C2.89543 16 2 16.8954 2 18Z" />
@@ -914,7 +885,7 @@ const Testimonials = () => {
                 <ChevronRight size={32} />
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -922,7 +893,13 @@ const Testimonials = () => {
 };
 
 const Footer = () => (
-  <footer className="bg-brand-navy text-white pt-24 pb-12">
+  <motion.footer 
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.8 }}
+    className="bg-brand-navy text-white pt-24 pb-12"
+  >
     <div className="container mx-auto px-4 md:px-8 grid lg:grid-cols-4 gap-12 border-b border-white/5 pb-20 mb-12">
       <div className="lg:col-span-1">
         <div className="flex items-center gap-3 mb-8">
@@ -930,12 +907,12 @@ const Footer = () => (
             <PawPrint className="text-white" size={28} />
           </div>
           <div>
-            <h4 className="text-xl font-bold tracking-tight leading-none uppercase">Cabinet Vétérinaire</h4>
+            <h4 className="text-xl font-bold tracking-tight leading-none uppercase">Val Fleuri</h4>
             <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-brand-teal mt-1">Clinique Vétérinaire</p>
           </div>
         </div>
         <p className="text-brand-stone/60 leading-relaxed mb-8 font-medium italic font-serif">
-          "Notre clinique allie expertise médicale de pointe et approche humaine pour le bien-être de vos fidèles compagnons."
+          "La Clinique Val Fleuri allie expertise médicale de pointe et approche humaine pour le bien-être de vos fidèles compagnons."
         </p>
         <div className="flex items-center space-x-4">
           <a href="#" className="w-12 h-12 border-2 border-white/5 rounded-2xl flex items-center justify-center hover:bg-brand-teal hover:border-brand-teal transition-all duration-300"><Facebook size={20} /></a>
@@ -968,7 +945,7 @@ const Footer = () => (
         <ul className="space-y-5 text-brand-stone/60 font-medium text-sm">
           <li className="flex items-start gap-4">
             <MapPin className="text-brand-teal shrink-0" size={20} />
-            <span className="text-sm">Votre Adresse, Casablanca, Maroc</span>
+            <span className="text-sm">43 Rue Ahmed El Kadmiri, Maarif Casablanca</span>
           </li>
           <li className="flex items-center gap-4">
             <Phone className="text-brand-teal shrink-0" size={20} />
@@ -976,19 +953,19 @@ const Footer = () => (
           </li>
           <li className="flex items-center gap-4">
             <Mail className="text-brand-teal shrink-0" size={20} />
-            <span className="text-sm">contact@votre-clinique.ma</span>
+            <span className="text-sm">contact@vetvalfleuri.ma</span>
           </li>
         </ul>
       </div>
     </div>
     <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between items-center text-brand-stone/40 text-[10px] font-bold uppercase tracking-widest">
-      <p>© {new Date().getFullYear()} Cabinet Vétérinaire.</p>
+      <p>© {new Date().getFullYear()} Cabinet Vétérinaire Val Fleuri.</p>
       <div className="flex gap-8 mt-4 md:mt-0">
         <a href="#" className="hover:text-brand-teal transition-colors">Mentions Légales</a>
         <a href="#" className="hover:text-brand-teal transition-colors">Politique de Confidentialité</a>
       </div>
     </div>
-  </footer>
+  </motion.footer>
 );
 
 const BeforeAfterGallery = () => {
@@ -997,9 +974,9 @@ const BeforeAfterGallery = () => {
       id: 1,
       name: "Tobby",
       treatment: "Dermatologie & Soin du pelage",
-      before: "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&q=80&w=800",
-      after: "https://images.unsplash.com/photo-1598133894008-61f7fdb8cc3a?auto=format&fit=crop&q=80&w=800",
-      description: "Traitement intensif d'une allergie cutanée sévère. Grâce à un protocole personnalisé, Tobby a retrouvé un poil brillant, une vitalité exceptionnelle et une peau parfaitement saine."
+      before: "https://images.unsplash.com/photo-1591768793355-74d75b0caec2?auto=format&fit=crop&q=80&w=800",
+      after: "https://images.unsplash.com/photo-1541364983171-a8ba01d95cfc?auto=format&fit=crop&q=80&w=800",
+      description: "Traitement intensif d'une allergie cutanée sévère. Tobby a retrouvé un poil brillant et une peau saine."
     },
     {
       id: 2,
@@ -1034,21 +1011,33 @@ const BeforeAfterGallery = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-16">
-          {cases.map((item, index) => (
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.15 }
+            }
+          }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 lg:gap-16"
+        >
+          {cases.map((item) => (
             <motion.div 
               key={item.id}
+              variants={{
+                hidden: { opacity: 0, scale: 0.9, y: 30 },
+                visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+              }}
               className="group"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.8 }}
-              viewport={{ once: true }}
               onMouseEnter={() => setHoveredId(item.id)}
               onMouseLeave={() => setHoveredId(null)}
             >
-              <div className="relative aspect-[4/5] rounded-[48px] overflow-hidden bg-brand-stone shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] group-hover:shadow-brand-teal/20 border-8 border-white mb-10 transition-all duration-500">
+              <div className="relative aspect-[4/5] rounded-[48px] overflow-hidden bg-brand-stone shadow-2xl border-8 border-white mb-10 group-hover:shadow-brand-teal/10 transition-shadow">
                 {/* Before Image (Base) */}
-                <img src={item.before} alt="Avant" className="absolute inset-0 w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-700" />
+                <img src={item.before} alt="Avant" className="absolute inset-0 w-full h-full object-cover" />
                 
                 {/* After Image (Slide reveal) */}
                 <motion.div 
@@ -1057,31 +1046,23 @@ const BeforeAfterGallery = () => {
                   animate={{ 
                     clipPath: hoveredId === item.id ? 'inset(0 0 0 0)' : 'inset(0 0 0 100%)' 
                   }}
-                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <img src={item.after} alt="Après" className="w-full h-full object-cover" />
-                  <div className="absolute top-8 right-8 bg-brand-teal text-white text-[10px] font-black px-6 py-3 rounded-full shadow-2xl z-20 uppercase tracking-[0.2em] border border-white/30 backdrop-blur-md">
+                  <div className="absolute top-8 right-8 bg-brand-teal text-white text-[10px] font-black px-5 py-2.5 rounded-full shadow-xl z-20 uppercase tracking-widest border border-white/20">
                     Après
                   </div>
                 </motion.div>
 
-                {/* Handle (Visual cue) */}
-                <motion.div 
-                  className="absolute inset-y-0 w-1 bg-white z-20"
-                  animate={{ 
-                    left: hoveredId === item.id ? '0%' : '100%' 
-                  }}
-                  initial={{ left: '100%' }}
-                  transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                >
-                   <div className="absolute top-1/2 -left-4 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-xl flex items-center justify-center text-brand-teal">
-                      <ChevronLeft size={16} /><ChevronRight size={16} className="-ml-2" />
-                   </div>
-                </motion.div>
-
                 {/* Labels and Hints */}
-                <div className="absolute top-8 left-8 bg-brand-navy/40 backdrop-blur-md text-white text-[10px] font-black px-6 py-3 rounded-full shadow-xl z-0 uppercase tracking-[0.2em] border border-white/10">
+                <div className="absolute top-8 left-8 bg-brand-navy/60 backdrop-blur-md text-white text-[10px] font-black px-5 py-2.5 rounded-full shadow-xl z-0 uppercase tracking-widest border border-white/10">
                   Avant
+                </div>
+
+                <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none group-hover:opacity-0 transition-opacity duration-500">
+                  <div className="bg-white/10 backdrop-blur-xl p-6 rounded-full border border-white/30 animate-pulse">
+                    <MousePointer2 className="text-white" size={32} />
+                  </div>
                 </div>
               </div>
 
@@ -1097,7 +1078,7 @@ const BeforeAfterGallery = () => {
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         <div className="mt-24 text-center">
           <motion.div 
@@ -1149,7 +1130,7 @@ const ContactSection = () => (
               </div>
               <div>
                 <h4 className="font-bold text-lg text-brand-navy">Adresse</h4>
-                <p className="text-brand-slate font-medium">Votre Adresse, Casablanca, Maroc</p>
+                <p className="text-brand-slate font-medium">43 Rue Ahmed El Kadmiri, Maarif Casablanca</p>
               </div>
             </div>
           </div>
@@ -1230,23 +1211,19 @@ const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose:
             className="absolute inset-0 bg-brand-navy/60 backdrop-blur-md"
           />
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 30 }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 20 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="bg-white w-full max-w-lg rounded-[42px] shadow-2xl relative z-10 overflow-hidden border border-brand-stone"
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            className="bg-white w-full max-w-xl rounded-[40px] shadow-2xl relative z-10 overflow-hidden border border-brand-stone"
           >
-            <div className="p-6 md:p-10">
-              <div className="flex justify-between items-center mb-10">
-                <div className="space-y-1">
-                  <h3 className="text-3xl font-black text-brand-navy tracking-tight leading-none">{title}</h3>
-                  <div className="h-1 w-10 bg-brand-teal rounded-full opacity-30" />
-                </div>
+            <div className="p-8 md:p-12">
+              <div className="flex justify-between items-center mb-8">
+                <h3 className="text-3xl font-extrabold text-brand-navy tracking-tight">{title}</h3>
                 <button 
                   onClick={onClose}
-                  className="w-14 h-14 bg-brand-stone/50 hover:bg-red-50 hover:text-red-500 rounded-2xl flex items-center justify-center text-brand-navy transition-all duration-300 shadow-sm group"
+                  className="w-12 h-12 bg-brand-stone rounded-2xl flex items-center justify-center text-brand-navy hover:bg-brand-teal hover:text-white transition-all shadow-sm"
                 >
-                  <X size={24} className="group-hover:rotate-90 transition-transform" />
+                  <X size={24} />
                 </button>
               </div>
               {children}
@@ -1261,7 +1238,7 @@ const Modal = ({ isOpen, onClose, title, children }: { isOpen: boolean; onClose:
 export default function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState<'appointment' | 'emergency' | 'subscription' | null>(null);
+  const [modalType, setModalType] = useState<'appointment' | 'emergency' | null>(null);
 
   const openAppointmentModal = () => {
     setModalType('appointment');
@@ -1273,11 +1250,6 @@ export default function App() {
     setIsModalOpen(true);
   };
 
-  const openSubscriptionModal = () => {
-    setModalType('subscription');
-    setIsModalOpen(true);
-  };
-
   const closeModals = () => {
     setIsModalOpen(false);
     setModalType(null);
@@ -1286,23 +1258,14 @@ export default function App() {
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 500);
     window.addEventListener('scroll', handleScroll);
-    
-    // Auto-popup for subscription after 5 seconds
-    const subTimer = setTimeout(() => {
-      openSubscriptionModal();
-    }, 5000);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(subTimer);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <div className="relative font-sans antialiased text-brand-navy selection:bg-brand-teal selection:text-white bg-white">
-      <TopBar onOpenSubscription={openSubscriptionModal} />
+      <TopBar />
       <Navbar onOpenAppointment={openAppointmentModal} onOpenEmergency={openEmergencyModal} />
       
       <main>
@@ -1382,55 +1345,6 @@ export default function App() {
         </div>
       </Modal>
 
-      <Modal 
-        isOpen={isModalOpen && modalType === 'subscription'} 
-        onClose={closeModals} 
-        title="Pass Santé Annuel"
-      >
-        <div className="text-center">
-          <div className="w-20 h-20 bg-gradient-to-tr from-brand-teal to-brand-teal-dark rounded-[28px] flex items-center justify-center mx-auto mb-6 shadow-2xl relative">
-            <div className="absolute inset-0 bg-white/20 rounded-[28px] blur-xl animate-pulse" />
-            <Sparkles className="text-white relative z-10" size={40} />
-          </div>
-          
-          <h4 className="text-2xl font-black text-brand-navy mb-3 tracking-tight leading-none">
-            Abonnement <span className="text-brand-teal italic font-serif">Privilège</span>
-          </h4>
-          
-          <p className="text-brand-slate font-medium mb-8 text-base">
-            Offrez une tranquillité d'esprit totale à votre compagnon pour seulement <span className="text-brand-navy font-black">1500 MAD / an</span>
-          </p>
-
-          <div className="grid gap-3 mb-10 text-left">
-            {[
-              "Consultations illimitées (Générale & NAC)",
-              "Priorité absolue sur tous les rendez-vous",
-              "Bilan biologique complet inclus 1x/an",
-              "Support WhatsApp dédié 24h/24"
-            ].map((benefit, i) => (
-              <div key={i} className="flex items-center gap-3 p-4 bg-brand-stone/40 rounded-2xl border border-white/50 group hover:bg-white hover:shadow-xl transition-all">
-                <div className="w-8 h-8 bg-brand-teal/10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-brand-teal transition-all">
-                  <Check size={14} className="text-brand-teal group-hover:text-white" />
-                </div>
-                <span className="text-xs font-bold text-brand-navy/80">{benefit}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="space-y-4">
-            <button 
-              onClick={() => { closeModals(); alert('Merci de votre intérêt ! Notre équipe vous contactera pour finaliser votre adhésion.'); }}
-              className="w-full bg-brand-navy text-white font-black py-5 rounded-2xl shadow-2xl hover:bg-brand-teal transform hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]"
-            >
-              Devenir Membre Premium
-            </button>
-            <p className="text-[9px] text-brand-slate font-bold uppercase tracking-widest opacity-40">
-              Engagement de 12 mois • Résiliable à tout moment
-            </p>
-          </div>
-        </div>
-      </Modal>
-
       {/* Floating Action Buttons for Desktop */}
       <div className="fixed bottom-8 right-8 z-[100] hidden lg:flex flex-col space-y-4">
         {/* Scroll Top Button */}
@@ -1470,19 +1384,9 @@ export default function App() {
         </motion.button>
 
         {/* WhatsApp Button */}
-        <a 
-          href="https://wa.me/212522252472?text=Bonjour%2C%20je%20souhaite%20prendre%20rendez-vous%20pour%20mon%20animal."
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative w-16 h-16 bg-[#25D366] text-white rounded-[24px] flex items-center justify-center transition-all transform-gpu hover:scale-110 active:scale-95 shadow-[0_12px_0_0_#15803d,0_20px_40px_rgba(37,211,102,0.4)] hover:shadow-[0_14px_0_0_#15803d,0_25px_50px_rgba(37,211,102,0.5)] active:shadow-[0_2px_0_0_#15803d,0_5px_10px_rgba(37,211,102,0.3)]"
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-white/5 to-transparent rounded-[24px]" />
-          <div className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 bg-[#25D366] text-white text-[10px] font-black uppercase tracking-widest rounded-lg opacity-0 group-hover:opacity-100 transition-all transform group-hover:-translate-y-1 shadow-xl whitespace-nowrap pointer-events-none">
-            Chat WhatsApp
-            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-[#25D366] rotate-45" />
-          </div>
-          <MessageCircle size={36} className="relative z-10 drop-shadow-[0_4px_4px_rgba(0,0,0,0.2)]" />
-        </a>
+        <button className="w-16 h-16 bg-[#25D366] text-white rounded-2xl flex items-center justify-center shadow-lg hover:scale-110 active:scale-95 transition-all">
+          <MessageCircle size={36} />
+        </button>
 
       </div>
 
